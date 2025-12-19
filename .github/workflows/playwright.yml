@@ -1,6 +1,5 @@
 name: Playwright Tests
 
-# Когда запускать workflow
 on:
   push:
     branches: ['main']
@@ -13,32 +12,27 @@ env:
 
 jobs:
   test:
-    runs-on: macos-latest # macOS runner, подойдет для MacBook
+    runs-on: macos-latest 
 
     steps:
-      # 1️⃣ Забираем репозиторий
+      
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # 2️⃣ Устанавливаем Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3️⃣ Устанавливаем зависимости
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Устанавливаем браузеры Playwright
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # 5️⃣ Запуск тестов
+      
       - name: Run Playwright tests
         run: npm test
 
-      # 6️⃣ Сохраняем отчёт (HTML + скриншоты)
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
