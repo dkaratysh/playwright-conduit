@@ -45,6 +45,7 @@ export class ArticlePage extends BasePage {
     await this.articleAboutInput.fill(data.description);
     await this.articleTextInput.fill(data.body);
     await this.submitUpdate.click();
+    await Promise.all([this.page.waitForURL(/#\/article\//), this.submitUpdate.click()]);
   }
 
   async expectTitle(text: string) {
@@ -53,6 +54,17 @@ export class ArticlePage extends BasePage {
 
   async expectBody(text: string) {
     await expect(this.articleBody).toContainText(text);
+  }
+
+  async getCurrentSlug(): Promise<string> {
+    const url = this.page.url();
+
+    const match = url.match(/#\/(article|editor)\/(.+)$/);
+    if (!match) {
+      throw new Error(`Cannot extract article slug from URL: ${url}`);
+    }
+
+    return match[2];
   }
 
   async deleteArticle() {

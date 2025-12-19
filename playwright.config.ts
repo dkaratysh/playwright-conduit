@@ -1,33 +1,24 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+import 'dotenv/config';
 
 export default defineConfig({
-  globalSetup: './global-setup.ts',
   testDir: './tests',
-  retries: 1,
-  reporter: [['html'], ['line']],
-
-  use: {
-    baseURL: process.env.BASE_URL,
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    headless: false,
-    launchOptions: {
-      slowMo: 300,
-    },
-  },
 
   projects: [
     {
-      name: 'auth',
-      testMatch: /tests\/setup\/auth\.setup\.spec\.ts$/,
+      name: 'setup',
+      testMatch: /.*auth\.setup\.spec\.ts/,
     },
     {
       name: 'chromium',
-      dependencies: ['auth'],
+      dependencies: ['setup'],
       use: {
-        browserName: 'chromium',
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.BASE_URL,
         storageState: '.auth/user.json',
       },
     },
   ],
+
+  timeout: 60_000,
 });

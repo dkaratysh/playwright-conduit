@@ -59,9 +59,12 @@ export async function deleteArticle(request: APIRequestContext, slug: string) {
     },
   });
 
+  if (response.status() === 404) {
+    return;
+  }
+
   if (!response.ok()) {
     const text = await response.text();
-    console.error('Delete Article failed:', text);
     throw new Error(`Failed to delete article: ${response.status()} ${text}`);
   }
 }
