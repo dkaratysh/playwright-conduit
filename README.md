@@ -10,6 +10,7 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 ## 🧪 What is tested
 
 ### UI tests
+
 - User login
 - Create article
 - Update article
@@ -17,10 +18,12 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 - Basic navigation and content assertions
 
 ### API tests
+
 - User authentication via API
 - Article CRUD operations
 
 ### API is also used for
+
 - Test data setup
 - Cleanup after UI tests
 
@@ -57,39 +60,47 @@ playwright-conduit/
 ## How to run tests
 
 ### 1 Install dependencies
+
 ```bash
 npm install
 ```
 
 ### Install Playwright browsers
+
 ```bash
 npx playwright install
 ```
 
 ### Run all tests
+
 ```bash
 npx playwright test
 ```
 
 ### Run UI tests only
+
 ```bash
 npx playwright test tests/ui
 ```
 
 ### Run API tests only
+
 ```bash
 npx playwright test tests/api
 ```
 
 ### Open test report
+
 ```bash
 npx playwright show-report
 ```
 
 ## Environment variables
+
 ```bash
 Create a .env file in the project root:
 ```
+
 ```env
 BASE_URL=https://api.realworld.io
 USER_EMAIL=your_email@example.com
@@ -115,6 +126,7 @@ v
 v
 [Assertions]
 ```
+
 ## Key Principles
 
 - Fixtures provide infrastructure, not test scenarios

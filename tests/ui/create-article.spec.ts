@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { EditorPage } from '../../pages/EditorPage';
-import { ArticlePage } from '../../pages/ArticlePage';
 import { buildArticleData } from '../../test-data/article.factory';
 import { createArticle, deleteArticle } from '../../fixtures/article.fixture';
 import { makeUpdatedArticle } from '../../helpers/article.helpers';
 import type { Article } from '../../fixtures/types/article';
+import { Pages } from '../../pages/pages.factory';
 
 test.describe('Article CRUD UI tests', () => {
   let createdArticle: Article | null = null;
+  let pages: Pages;
+
+  test.beforeEach(async ({ page }) => {
+    pages = new Pages(page);
+  });
 
   test.afterEach(async ({ request }) => {
     if (createdArticle) {
@@ -20,17 +23,12 @@ test.describe('Article CRUD UI tests', () => {
   test('Create new article', async ({ page }) => {
     const articleData = buildArticleData();
 
-    const homePage = new HomePage(page);
-    const editorPage = new EditorPage(page);
-    const articlePage = new ArticlePage(page);
+    await pages.home.open();
+    await pages.home.goToEditor();
+    await pages.editor.fillNewArticle(articleData);
+    await pages.editor.publishNewArticle();
 
-    await homePage.open();
-    await homePage.goToEditor();
-
-    await editorPage.fillNewArticle(articleData);
-    await editorPage.publishNewArticle();
-
-    await articlePage.assertOpened();
+    await pages.article.assertOpened();
 
     const slug = page.url().split('/article/')[1];
 
@@ -40,8 +38,8 @@ test.describe('Article CRUD UI tests', () => {
       tagList: articleData.tags,
     };
 
-    await articlePage.expectTitle(articleData.title);
-    await articlePage.expectBody(articleData.body);
+    await pages.article.expectTitle(articleData.title);
+    await pages.article.expectBody(articleData.body);
   });
 
   test('Update the article', async ({ page, request }) => {
@@ -49,13 +47,12 @@ test.describe('Article CRUD UI tests', () => {
       title: `Test article ${Date.now()}`,
     });
 
-    const articlePage = new ArticlePage(page);
     const updatedArticle = makeUpdatedArticle(article);
 
-    await articlePage.openArticle(article.slug);
-    await articlePage.assertOpened(article.slug);
+    await pages.article.openArticle(article.slug);
+    await pages.article.assertOpened(article.slug);
 
-    await articlePage.updateArticle(updatedArticle);
+    await pages.article.updateArticle(updatedArticle);
 
     const updatedSlug = page.url().split('/article/')[1];
 
@@ -65,20 +62,18 @@ test.describe('Article CRUD UI tests', () => {
       slug: updatedSlug,
     };
 
-    await articlePage.expectTitle(updatedArticle.title);
-    await articlePage.expectBody(updatedArticle.body);
+    await pages.article.expectTitle(updatedArticle.title);
+    await pages.article.expectBody(updatedArticle.body);
   });
 
   test('Delete the article', async ({ page, request }) => {
     const article = await createArticle(request);
     createdArticle = null;
 
-    const articlePage = new ArticlePage(page);
+    await pages.article.openArticle(article.slug);
+    await pages.article.assertOpened(article.slug);
 
-    await articlePage.openArticle(article.slug);
-    await articlePage.assertOpened(article.slug);
-
-    await articlePage.deleteArticle();
+    await pages.article.deleteArticle();
 
     await expect(page).toHaveURL(/#\/$/);
 
