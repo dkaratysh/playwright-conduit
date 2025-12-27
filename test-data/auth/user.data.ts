@@ -1,6 +1,6 @@
-export const userA = {
-  email: process.env.USER_A_EMAIL!,
-  password: process.env.USER_A_PASS!,
+export const user = {
+  email: process.env.USER_EMAIL!,
+  password: process.env.USER_PASS!,
 };
 
 export const userB = {

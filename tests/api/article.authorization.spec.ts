@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { loginViaApi } from '../../fixtures/article.fixture';
 import { createArticle } from '../../fixtures/article.fixture';
-import { userA, userB } from '../../test-data/auth/user.data';
+import { user, userB } from '../../test-data/auth/user.data';
 
 test.describe('Articles API — unauthorized access', () => {
   test('Cannot update article of another user', async ({ request }) => {
-    const tokenA = await loginViaApi(request, userA);
+    const tokenA = await loginViaApi(request, user);
 
     const article = await createArticle(request, {
       token: tokenA,
@@ -32,7 +32,7 @@ test.describe('Articles API — unauthorized access', () => {
   });
 
   test('Cannot delete article of another user', async ({ request }) => {
-    const tokenA = await loginViaApi(request, userA);
+    const tokenA = await loginViaApi(request, user);
     const article = await createArticle(request, {
       token: tokenA,
     });
