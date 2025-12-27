@@ -45,7 +45,7 @@ test.describe('Article CRUD UI tests', () => {
   test('Update the article', async ({ page, request }) => {
     const article = await createArticle(request, {
       title: `Test article ${Date.now()}`,
-    });
+    } as any);
 
     const updatedArticle = makeUpdatedArticle(article);
 

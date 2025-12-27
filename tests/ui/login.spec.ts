@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { validUser } from '../../test-data/auth/user.data';
+import { userA } from '../../test-data/auth/user.data';
 import { LoginPage } from '../../pages/LoginPage.js';
 
 test.describe('Login tests', () => {
@@ -7,7 +7,7 @@ test.describe('Login tests', () => {
     const loginPage = new LoginPage(page);
 
     await loginPage.openLoginPage();
-    await loginPage.login(validUser.email, validUser.password);
+    await loginPage.login(userA.email, userA.password);
     await expect(page.getByRole('button', { name: 'Your Feed' })).toBeVisible();
   });
 
@@ -15,7 +15,7 @@ test.describe('Login tests', () => {
     const loginPage = new LoginPage(page);
 
     await loginPage.openLoginPage();
-    await loginPage.login(validUser.email, 'InvalidPassword123');
+    await loginPage.login(userA.email, 'InvalidPassword123');
     await expect(loginPage.errorMessage).toHaveText('Wrong email/password combination');
   });
 });
