@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { buildArticleData } from '../../test-data/article.factory';
-import { createArticle, deleteArticle } from '../../fixtures/article.fixture';
-import { makeUpdatedArticle } from '../../helpers/article.helpers';
+import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
+import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../fixtures/types/article';
 import { Pages } from '../../pages/pages.factory';
 

@@ -1,5 +1,5 @@
 import type { APIRequestContext } from '@playwright/test';
-import type { Article } from '../fixtures/types/article';
+import type { Article } from '../../fixtures/types/article';
 
 type Credentials = {
   email: string;

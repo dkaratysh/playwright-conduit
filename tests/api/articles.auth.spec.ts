@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { buildArticleData } from '../../test-data/article.factory';
-import { createArticle } from '../../fixtures/article.fixture';
+import { createArticle } from '../../helpers/api/article.helper';
 
 test.describe('Articles API — unauthorized access', () => {
   test('Cannot create article without auth', async ({ request }) => {
