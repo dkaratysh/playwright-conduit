@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { buildArticleData } from '../../test-data/article.factory';
+import { buildArticleData } from '../../test-data/factories/article.factory';
 import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
-import type { Article } from '../../fixtures/types/article';
+import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
 
 test.describe('Article CRUD UI tests', () => {

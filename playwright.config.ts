@@ -34,8 +34,8 @@ export default defineConfig({
       },
     },
     {
-      name: 'ui-mock',
-      testDir: './tests/ui-mocked',
+      name: 'mock',
+      testDir: './tests/mock',
       use: {
         ...devices['Desktop Chrome'],
       },

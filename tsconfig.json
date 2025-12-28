@@ -21,6 +21,7 @@
     "config",
     "utils",
     "playwright.config.ts",
-    "helpers/api/article.helper.ts"
+    "helpers/api/article.helper.ts",
+    "types/article.ts"
   ]
 }
