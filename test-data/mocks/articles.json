@@ -1,0 +1,22 @@
+{
+  "articles": [
+    {
+      "slug": "mock-article-1",
+      "title": "Mocked article from Playwright",
+      "description": "This article is served from a network mock",
+      "body": "No backend was harmed during this test",
+      "tagList": ["playwright", "mock"],
+      "createdAt": "2024-01-01T10:00:00.000Z",
+      "updatedAt": "2024-01-01T10:00:00.000Z",
+      "favorited": false,
+      "favoritesCount": 0,
+      "author": {
+        "username": "mockuser",
+        "bio": null,
+        "image": "https://api.realworld.io/images/smiley-cyrus.jpeg",
+        "following": false
+      }
+    }
+  ],
+  "articlesCount": 1
+}

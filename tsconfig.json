@@ -12,5 +12,5 @@
 
     "isolatedModules": true
   },
-  "include": ["tests", "pages", "fixtures", "config", "utils", "playwright.config.ts"]
+  "include": ["tests", "test-data", "pages", "fixtures", "config", "utils", "playwright.config.ts"]
 }
