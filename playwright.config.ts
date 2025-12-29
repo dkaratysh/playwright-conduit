@@ -34,6 +34,15 @@ export default defineConfig({
       },
     },
     {
+      name: 'e2e',
+      testDir: './tests/e2e',
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: '.auth/user.json',
+      },
+    },
+    {
       name: 'mock',
       testDir: './tests/mock',
       use: {

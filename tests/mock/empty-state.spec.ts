@@ -1,4 +1,4 @@
-import { test} from '../../fixtures/network.fixture';
+import { test } from '../../fixtures/network.fixture';
 import { expect } from '@playwright/test';
 
 test('Global Feed — empty', async ({ page, mockArticles }) => {

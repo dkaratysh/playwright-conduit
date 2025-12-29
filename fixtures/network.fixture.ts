@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 
-import articles from '../test-data/mocks/articles.json' assert { type: 'json' }; 
+import articles from '../test-data/mocks/articles.json' assert { type: 'json' };
 import emptyArticles from '../test-data/mocks/empty-articles.json' assert { type: 'json' };
 import errorResponse from '../test-data/mocks/articles-error.json' assert { type: 'json' };
 
