@@ -5,9 +5,15 @@ const baseURL = process.env.BASE_URL ?? 'https://conduit-realworld-example-app.f
 export default defineConfig({
   use: {
     baseURL,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    trace: 'on-first-retry',
   },
   testDir: './tests',
-  reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }]],
+  reporter: [
+  ['html', { outputFolder: 'playwright-report', open: 'never' }],
+  ['allure-playwright', { outputFolder: 'allure-results' }],
+],
   projects: [
     {
       name: 'setup',

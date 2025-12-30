@@ -15,6 +15,8 @@ test-results/
 blob-report/
 trace.zip
 trace/
+allure-results/
+allure-report/
 
 # ===============================
 # Environment variables
