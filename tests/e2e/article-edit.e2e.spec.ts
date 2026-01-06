@@ -3,7 +3,7 @@ import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
-import { loginViaApi } from '../../helpers/api/loginViaApi';
+import { loginViaApi } from '../../helpers/api/auth.helper';
 
 test.describe('Article edit flow (API - UI - API)', () => {
   test('user edits article via UI', async ({ page, request }) => {
