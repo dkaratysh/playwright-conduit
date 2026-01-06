@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { loginViaApi } from '../../helpers/api/article.helper';
+import { loginViaApi } from '../../helpers/api/loginViaApi';
 import { createArticle } from '../../helpers/api/article.helper';
 import { user, userB } from '../../test-data/auth/user.data';
 

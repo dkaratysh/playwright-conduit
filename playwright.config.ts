@@ -11,9 +11,9 @@ export default defineConfig({
   },
   testDir: './tests',
   reporter: [
-  ['html', { outputFolder: 'playwright-report', open: 'never' }],
-  ['allure-playwright', { outputFolder: 'allure-results' }],
-],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
+  ],
   projects: [
     {
       name: 'setup',
