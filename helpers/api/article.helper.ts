@@ -1,48 +1,22 @@
 import type { APIRequestContext } from '@playwright/test';
 import type { Article } from '../../types/article';
 
-type Credentials = {
-  email: string;
-  password: string;
-};
-
 type CreateArticleOptions = {
   token?: string;
   overrides?: Partial<Omit<Article, 'slug'>>;
 };
 
-export async function loginViaApi(
-  request: APIRequestContext,
-  credentials?: Credentials,
-): Promise<string> {
-  const email = credentials?.email ?? process.env.USER_EMAIL;
-  const password = credentials?.password ?? process.env.USER_PASS;
-
-  if (!email || !password) {
-    throw new Error('Missing API login credentials (USER_EMAIL / USER_PASS)');
-  }
-
-  const response = await request.post('/api/users/login', {
-    data: {
-      user: { email, password },
-    },
-  });
-
-  const text = await response.text();
-
-  if (!response.ok()) {
-    throw new Error(`Login failed: ${response.status()} — ${text}`);
-  }
-
-  const data = JSON.parse(text);
-  return data.user.token as string;
-}
-
 export async function createArticle(
   request: APIRequestContext,
   options?: CreateArticleOptions,
 ): Promise<Article> {
-  const token = options?.token ?? (await loginViaApi(request));
+  const token = options?.token;
+
+  if (!token) {
+    throw new Error(
+      'createArticle requires token. ' + 'Login must be done outside of article.helper.ts',
+    );
+  }
 
   const articleData = {
     title: options?.overrides?.title ?? `Test article ${Date.now()}`,
@@ -73,11 +47,15 @@ export async function deleteArticle(
   slug: string,
   token?: string,
 ): Promise<void> {
-  const authToken = token ?? (await loginViaApi(request));
+  if (!token) {
+    throw new Error(
+      'deleteArticle requires token. ' + 'Login must be done outside of article.helper.ts',
+    );
+  }
 
   const response = await request.delete(`/api/articles/${slug}`, {
     headers: {
-      Authorization: `Token ${authToken}`,
+      Authorization: `Token ${token}`,
     },
   });
 

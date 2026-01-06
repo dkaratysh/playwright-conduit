@@ -4,18 +4,21 @@ import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
+import { loginViaApi } from '../../helpers/api/loginViaApi';
 
 test.describe('Article CRUD UI tests', () => {
   let createdArticle: Article | null = null;
   let pages: Pages;
+  let token: string;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
     pages = new Pages(page);
+    token = await loginViaApi(request);
   });
 
   test.afterEach(async ({ request }) => {
     if (createdArticle) {
-      await deleteArticle(request, createdArticle.slug);
+      await deleteArticle(request, createdArticle.slug, token);
       createdArticle = null;
     }
   });
@@ -44,14 +47,16 @@ test.describe('Article CRUD UI tests', () => {
 
   test('Update the article', async ({ page, request }) => {
     const article = await createArticle(request, {
-      title: `Test article ${Date.now()}`,
+      token,
+      overrides: {
+        title: `Test article ${Date.now()}`,
+      },
     } as any);
 
     const updatedArticle = makeUpdatedArticle(article);
 
     await pages.article.openArticle(article.slug);
     await pages.article.assertOpened(article.slug);
-
     await pages.article.updateArticle(updatedArticle);
 
     const updatedSlug = page.url().split('/article/')[1];
@@ -67,17 +72,20 @@ test.describe('Article CRUD UI tests', () => {
   });
 
   test('Delete the article', async ({ page, request }) => {
-    const article = await createArticle(request);
+    const article = await createArticle(request, { token });
     createdArticle = null;
 
     await pages.article.openArticle(article.slug);
     await pages.article.assertOpened(article.slug);
-
     await pages.article.deleteArticle();
 
     await expect(page).toHaveURL(/#\/$/);
 
-    const response = await request.get(`${process.env.BASE_URL}/api/articles/${article.slug}`);
+    const response = await request.get(`${process.env.BASE_URL}/api/articles/${article.slug}`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
     expect(response.status()).toBe(404);
   });
 });

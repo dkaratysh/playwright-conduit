@@ -3,6 +3,7 @@ import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
+import { loginViaApi } from '../../helpers/api/loginViaApi';
 
 test.describe('Article edit flow (API - UI - API)', () => {
   test('user edits article via UI', async ({ page, request }) => {
@@ -12,8 +13,10 @@ test.describe('Article edit flow (API - UI - API)', () => {
     let updatedArticle: Article;
     const pages = new Pages(page);
 
+    const token = await loginViaApi(request);
+
     await test.step('Create article via API', async () => {
-      article = await createArticle(request);
+      article = await createArticle(request, { token });
     });
 
     await test.step('Edit article via UI', async () => {
@@ -29,7 +32,11 @@ test.describe('Article edit flow (API - UI - API)', () => {
     });
 
     await test.step('Verify updated article via API', async () => {
-      const response = await request.get(`/api/articles/${article.slug}`);
+      const response = await request.get(`/api/articles/${article.slug}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
       expect(response.status()).toBe(200);
 
       const body = await response.json();
@@ -38,7 +45,7 @@ test.describe('Article edit flow (API - UI - API)', () => {
     });
 
     await test.step('Clean up - delete article via API', async () => {
-      await deleteArticle(request, article.slug);
+      await deleteArticle(request, article.slug, token);
     });
   });
 });

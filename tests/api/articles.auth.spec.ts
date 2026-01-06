@@ -1,8 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { buildArticleData } from '../../test-data/factories/article.factory';
+import { loginViaApi } from '../../helpers/api/loginViaApi';
 import { createArticle } from '../../helpers/api/article.helper';
 
 test.describe('Articles API — unauthorized access', () => {
+  let token: string;
+
+  test.beforeEach(async ({ request }) => {
+    token = await loginViaApi(request);
+  });
+
   test('Cannot create article without auth', async ({ request }) => {
     const articleData = buildArticleData();
 
@@ -17,13 +24,12 @@ test.describe('Articles API — unauthorized access', () => {
     });
 
     expect(response.status()).toBe(401);
-
     const body = await response.json();
     expect(body).toHaveProperty('errors');
   });
 
   test('Cannot update article without auth', async ({ request }) => {
-    const article = await createArticle(request);
+    const article = await createArticle(request, { token, overrides: buildArticleData() });
 
     const response = await request.put(`/api/articles/${article.slug}`, {
       data: {
@@ -34,14 +40,12 @@ test.describe('Articles API — unauthorized access', () => {
     });
 
     expect(response.status()).toBe(401);
-
     const body = await response.json();
     expect(body).toHaveProperty('errors');
   });
 
   test('Cannot delete article without auth', async ({ request }) => {
-    const article = await createArticle(request);
-
+    const article = await createArticle(request, { token, overrides: buildArticleData() });
     const response = await request.delete(`/api/articles/${article.slug}`);
 
     expect(response.status()).toBe(401);
