@@ -1,21 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { loginViaApi } from '../../helpers/api/auth.helper';
-import { createArticle } from '../../helpers/api/article.helper';
-import { user, userB } from '../../test-data/auth/user.data';
+import { test, expect } from '../../fixtures/article.fixture';
 
 test.describe('Articles API — unauthorized access', () => {
-  test('Cannot update article of another user', async ({ request }) => {
-    const tokenA = await loginViaApi(request, user);
-
-    const article = await createArticle(request, {
-      token: tokenA,
-    });
-
-    const tokenB = await loginViaApi(request, userB);
+  test('Cannot update article of another user', async ({ request, article, foreignUserToken }) => {
 
     const response = await request.put(`/api/articles/${article.slug}`, {
       headers: {
-        Authorization: `Token ${tokenB}`,
+        Authorization: `Token ${foreignUserToken}`,
       },
       data: {
         article: {
@@ -31,16 +21,11 @@ test.describe('Articles API — unauthorized access', () => {
     expect(body.errors.body).toContain('You are not the author of this article');
   });
 
-  test('Cannot delete article of another user', async ({ request }) => {
-    const tokenA = await loginViaApi(request, user);
-    const article = await createArticle(request, {
-      token: tokenA,
-    });
+  test('Cannot delete article of another user', async ({ request, article, foreignUserToken }) => {
 
-    const tokenB = await loginViaApi(request, userB);
     const response = await request.delete(`/api/articles/${article.slug}`, {
       headers: {
-        Authorization: `Token ${tokenB}`,
+        Authorization: `Token ${foreignUserToken}`,
       },
     });
 

@@ -1,14 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/article.fixture';
 import { buildArticleData } from '../../test-data/factories/article.factory';
-import { loginViaApi } from '../../helpers/api/auth.helper';
-import { createArticle } from '../../helpers/api/article.helper';
+import type { APIResponse } from '@playwright/test';
+
 
 test.describe('Articles API — unauthorized access', () => {
-  let token: string;
+  // let token: string;
 
-  test.beforeEach(async ({ request }) => {
-    token = await loginViaApi(request);
-  });
+  // test.beforeEach(async ({ request }) => {
+  //   token = await loginViaApi(request);
+  // });
 
   test('Cannot create article without auth', async ({ request }) => {
     const articleData = buildArticleData();
@@ -24,12 +24,10 @@ test.describe('Articles API — unauthorized access', () => {
     });
 
     expect(response.status()).toBe(401);
-    const body = await response.json();
-    expect(body).toHaveProperty('errors');
+    await expectUnauthorized(response);
   });
 
-  test('Cannot update article without auth', async ({ request }) => {
-    const article = await createArticle(request, { token, overrides: buildArticleData() });
+  test('Cannot update article without auth', async ({ request, article }) => {
 
     const response = await request.put(`/api/articles/${article.slug}`, {
       data: {
@@ -40,16 +38,18 @@ test.describe('Articles API — unauthorized access', () => {
     });
 
     expect(response.status()).toBe(401);
-    const body = await response.json();
-    expect(body).toHaveProperty('errors');
+    await expectUnauthorized(response);
   });
 
-  test('Cannot delete article without auth', async ({ request }) => {
-    const article = await createArticle(request, { token, overrides: buildArticleData() });
+  test('Cannot delete article without auth', async ({ request, article }) => {
     const response = await request.delete(`/api/articles/${article.slug}`);
 
     expect(response.status()).toBe(401);
-    const body = await response.json();
-    expect(body).toHaveProperty('errors');
+    await expectUnauthorized(response);
   });
 });
+
+async function expectUnauthorized(response: APIResponse) {
+  const body = await response.json();
+  expect(body).toHaveProperty('errors');
+}
