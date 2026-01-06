@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { buildArticleData } from '../../test-data/factories/article.factory';
-import { loginViaApi } from '../../helpers/api/loginViaApi';
+import { loginViaApi } from '../../helpers/api/auth.helper';
 import { createArticle } from '../../helpers/api/article.helper';
 
 test.describe('Articles API — unauthorized access', () => {
