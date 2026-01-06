@@ -1,79 +1,50 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/article.fixture';
 import { buildArticleData } from '../../test-data/factories/article.factory';
-import { createArticle, deleteArticle } from '../../helpers/api/article.helper';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
-import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
 import { loginViaApi } from '../../helpers/api/auth.helper';
 
+
 test.describe('Article CRUD UI tests', () => {
-  let createdArticle: Article | null = null;
   let pages: Pages;
-  let token: string;
 
-  test.beforeEach(async ({ page, request }) => {
+  test.beforeEach(async ({ page }) => {
     pages = new Pages(page);
-    token = await loginViaApi(request);
   });
 
-  test.afterEach(async ({ request }) => {
-    if (createdArticle) {
-      await deleteArticle(request, createdArticle.slug, token);
-      createdArticle = null;
-    }
-  });
-
-  test('Create new article', async ({ page }) => {
+  test('Create new article', async ({ page, request}) => {
     const articleData = buildArticleData();
 
     await pages.home.open();
     await pages.home.goToEditor();
     await pages.editor.fillNewArticle(articleData);
     await pages.editor.publishNewArticle();
-
     await pages.article.assertOpened();
-
-    const slug = page.url().split('/article/')[1];
-
-    createdArticle = {
-      ...articleData,
-      slug,
-      tagList: articleData.tags,
-    };
 
     await pages.article.expectTitle(articleData.title);
     await pages.article.expectBody(articleData.body);
+
+    const slug = page.url().split('/article/')[1];
+    const token = await loginViaApi(request);
+    await request.delete(`${process.env.BASE_URL}/api/articles/${slug}`, {
+    headers: { Authorization: `Token ${token}` },
+  });
   });
 
-  test('Update the article', async ({ page, request }) => {
-    const article = await createArticle(request, {
-      token,
-      overrides: {
-        title: `Test article ${Date.now()}`,
-      },
-    } as any);
-
+  test('Update the article', async ({ article, page }) => {
     const updatedArticle = makeUpdatedArticle(article);
 
     await pages.article.openArticle(article.slug);
     await pages.article.assertOpened(article.slug);
     await pages.article.updateArticle(updatedArticle);
 
-    const updatedSlug = page.url().split('/article/')[1];
-
-    createdArticle = {
-      ...article,
-      ...updatedArticle,
-      slug: updatedSlug,
-    };
+    article.slug = page.url().split('/article/')[1];
 
     await pages.article.expectTitle(updatedArticle.title);
     await pages.article.expectBody(updatedArticle.body);
   });
 
-  test('Delete the article', async ({ page, request }) => {
-    const article = await createArticle(request, { token });
-    createdArticle = null;
+  test('Delete the article', async ({ page, request, article }) => {
 
     await pages.article.openArticle(article.slug);
     await pages.article.assertOpened(article.slug);
@@ -83,9 +54,9 @@ test.describe('Article CRUD UI tests', () => {
 
     const response = await request.get(`${process.env.BASE_URL}/api/articles/${article.slug}`, {
       headers: {
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${article.ownerToken}`,
       },
     });
     expect(response.status()).toBe(404);
   });
-});
+ });
