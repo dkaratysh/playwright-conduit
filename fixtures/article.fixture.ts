@@ -1,29 +1,27 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { loginViaApi } from '../helpers/api/auth.helper';
-import { createArticle } from '../helpers/api/article.helper';
+import { createArticle, deleteArticle } from '../helpers/api/article.helper';
 import { user, userB } from '../test-data/auth/user.data';
+import type { Article } from '../types/article';
 
 type ArticleOwnershipFixtures = {
-  article: {
-    slug: string;
-  };
+  article: Article & { ownerToken: string }; // добавляем ownerToken внутрь article
   foreignUserToken: string;
 };
 
 export const test = base.extend<ArticleOwnershipFixtures>({
   article: async ({ request }, use) => {
     const ownerToken = await loginViaApi(request, user);
-    const article = await createArticle(request, {
-      token: ownerToken,
-    });
+    const article = await createArticle(request, { token: ownerToken });
 
-    await use(article);
+    const mutableArticle: Article & { ownerToken: string } = {
+      ...article,
+      ownerToken,
+    };
 
-    await request.delete(`/api/articles/${article.slug}`, {
-      headers: {
-        Authorization: `Token ${ownerToken}`,
-      },
-    });
+    await use(mutableArticle);
+
+    await deleteArticle(request, mutableArticle.slug, ownerToken);
   },
 
   foreignUserToken: async ({ request }, use) => {
@@ -32,6 +30,7 @@ export const test = base.extend<ArticleOwnershipFixtures>({
   },
 });
 
-export { expect } from '@playwright/test';
+export { expect };
+
 
 
