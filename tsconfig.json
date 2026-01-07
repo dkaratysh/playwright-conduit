@@ -19,6 +19,7 @@
     "pages",
     "fixtures",
     "config",
+    "components",
     "utils",
     "playwright.config.ts",
     "helpers/api/article.helper.ts",

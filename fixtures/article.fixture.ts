@@ -31,6 +31,3 @@ export const test = base.extend<ArticleOwnershipFixtures>({
 });
 
 export { expect };
-
-
-

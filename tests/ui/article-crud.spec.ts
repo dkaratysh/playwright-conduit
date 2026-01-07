@@ -4,7 +4,6 @@ import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import { Pages } from '../../pages/pages.factory';
 import { loginViaApi } from '../../helpers/api/auth.helper';
 
-
 test.describe('Article CRUD UI tests', () => {
   let pages: Pages;
 
@@ -12,10 +11,10 @@ test.describe('Article CRUD UI tests', () => {
     pages = new Pages(page);
   });
 
-  test('Create new article', async ({ page, request}) => {
+  test('Create new article', async ({ page, request }) => {
     const articleData = buildArticleData();
 
-    await pages.home.open();
+    await page.goto('/');
     await pages.home.goToEditor();
     await pages.editor.fillNewArticle(articleData);
     await pages.editor.publishNewArticle();
@@ -27,8 +26,8 @@ test.describe('Article CRUD UI tests', () => {
     const slug = page.url().split('/article/')[1];
     const token = await loginViaApi(request);
     await request.delete(`${process.env.BASE_URL}/api/articles/${slug}`, {
-    headers: { Authorization: `Token ${token}` },
-  });
+      headers: { Authorization: `Token ${token}` },
+    });
   });
 
   test('Update the article', async ({ article, page }) => {
@@ -45,7 +44,6 @@ test.describe('Article CRUD UI tests', () => {
   });
 
   test('Delete the article', async ({ page, request, article }) => {
-
     await pages.article.openArticle(article.slug);
     await pages.article.assertOpened(article.slug);
     await pages.article.deleteArticle();
@@ -59,4 +57,4 @@ test.describe('Article CRUD UI tests', () => {
     });
     expect(response.status()).toBe(404);
   });
- });
+});

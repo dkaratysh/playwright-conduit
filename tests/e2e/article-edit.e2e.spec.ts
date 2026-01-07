@@ -3,10 +3,8 @@ import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
 
-
 test.describe('Article edit flow (API - UI - API)', () => {
   test('user edits article via UI', async ({ page, request, article }) => {
-
     const pages = new Pages(page);
     const updatedArticle: Article = makeUpdatedArticle(article);
 
@@ -31,6 +29,5 @@ test.describe('Article edit flow (API - UI - API)', () => {
       expect(body.article.title).toBe(updatedArticle.title);
       expect(body.article.body).toBe(updatedArticle.body);
     });
-    });
   });
-
+});
