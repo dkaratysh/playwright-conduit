@@ -1,12 +1,11 @@
 import { BasePage } from './BasePage';
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { ArticleFormComponent } from '../components/articleForm.component';
 
 export class ArticlePage extends BasePage {
-  readonly articleTitleInput: Locator;
-  readonly articleAboutInput: Locator;
-  readonly articleTextInput: Locator;
-  readonly articleTagsInput: Locator;
+  
+  readonly form: ArticleFormComponent;
   readonly delete: Locator;
   readonly edit: Locator;
   readonly submitUpdate: Locator;
@@ -16,10 +15,8 @@ export class ArticlePage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    this.articleTitleInput = page.getByPlaceholder('Article Title');
-    this.articleAboutInput = page.getByPlaceholder("What's this article about?");
-    this.articleTextInput = page.getByPlaceholder('Write your article (in markdown)');
-    this.articleTagsInput = page.getByPlaceholder('Enter tags');
+    this.form = new ArticleFormComponent(this.page);
+
     this.edit = page.getByRole('button', { name: ' Edit Article' });
     this.delete = page.getByRole('button', { name: 'Delete Article' });
     this.submitUpdate = page.getByRole('button', { name: 'Update Article' });
@@ -41,9 +38,7 @@ export class ArticlePage extends BasePage {
 
   async updateArticle(data: { title: string; description: string; body: string; tag?: string }) {
     await this.edit.nth(0).click();
-    await this.articleTitleInput.fill(data.title);
-    await this.articleAboutInput.fill(data.description);
-    await this.articleTextInput.fill(data.body);
+    await this.form.fillArticle(data);
     await this.submitUpdate.click();
     await Promise.all([this.page.waitForURL(/#\/article\//), this.submitUpdate.click()]);
   }
