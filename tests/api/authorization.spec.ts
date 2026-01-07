@@ -2,7 +2,6 @@ import { test, expect } from '../../fixtures/article.fixture';
 
 test.describe('Articles API — unauthorized access', () => {
   test('Cannot update article of another user', async ({ request, article, foreignUserToken }) => {
-
     const response = await request.put(`/api/articles/${article.slug}`, {
       headers: {
         Authorization: `Token ${foreignUserToken}`,
@@ -22,7 +21,6 @@ test.describe('Articles API — unauthorized access', () => {
   });
 
   test('Cannot delete article of another user', async ({ request, article, foreignUserToken }) => {
-
     const response = await request.delete(`/api/articles/${article.slug}`, {
       headers: {
         Authorization: `Token ${foreignUserToken}`,

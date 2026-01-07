@@ -13,15 +13,15 @@ export class EditorPage extends BasePage {
   }
 
   async fillNewArticle(data: { title: string; description: string; body: string; tag?: string }) {
-    await this.form.fillArticle(data); 
+    await this.form.fillArticle(data);
   }
-  
+
   async publishNewArticle() {
     await this.publishArticleButton.click();
   }
 
   async getSlug(): Promise<string> {
-    const url = this.page.url(); 
+    const url = this.page.url();
     return url.split('/').pop()!;
   }
 }

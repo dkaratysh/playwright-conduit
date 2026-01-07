@@ -3,13 +3,11 @@ import type { Locator, Page } from '@playwright/test';
 import { NavbarComponent } from '../components/navbar.component';
 
 export class HomePage extends BasePage {
-  
   readonly navbar: NavbarComponent;
 
   readonly banner: Locator;
   readonly globalFeedTab: Locator;
   readonly yourFeedTab: Locator;
-  
 
   constructor(page: Page) {
     super(page);

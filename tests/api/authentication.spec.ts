@@ -2,7 +2,6 @@ import { test, expect } from '../../fixtures/article.fixture';
 import { buildArticleData } from '../../test-data/factories/article.factory';
 import type { APIResponse } from '@playwright/test';
 
-
 test.describe('Articles API — unauthorized access', () => {
   // let token: string;
 
@@ -28,7 +27,6 @@ test.describe('Articles API — unauthorized access', () => {
   });
 
   test('Cannot update article without auth', async ({ request, article }) => {
-
     const response = await request.put(`/api/articles/${article.slug}`, {
       data: {
         article: {
