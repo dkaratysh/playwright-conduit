@@ -11,6 +11,9 @@ export class ArticlePage extends BasePage {
   readonly submitUpdate: Locator;
   readonly articleTitle: Locator;
   readonly articleBody: Locator;
+  readonly commentInput: Locator
+  readonly postCommentButton: Locator;
+  readonly commentLocator: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -22,6 +25,9 @@ export class ArticlePage extends BasePage {
     this.submitUpdate = page.getByRole('button', { name: 'Update Article' });
     this.articleTitle = page.getByRole('heading');
     this.articleBody = page.locator('.article-content');
+    this.commentInput = page.getByPlaceholder('Write a comment...');
+    this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
+    this.commentLocator = page.locator('.card-text')
   }
 
   async openArticle(slug: string) {
@@ -68,5 +74,10 @@ export class ArticlePage extends BasePage {
     });
 
     await this.delete.nth(0).click();
+  }
+
+  async postComment(comment:string){
+    await this.commentInput.fill(comment);
+    await this.postCommentButton.click();
   }
 }
