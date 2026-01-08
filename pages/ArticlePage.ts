@@ -13,6 +13,8 @@ export class ArticlePage extends BasePage {
   readonly commentInput: Locator;
   readonly postCommentButton: Locator;
   readonly commentLocator: Locator;
+  readonly favoriteIcon: Locator;
+  readonly favoriteCount: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -27,6 +29,8 @@ export class ArticlePage extends BasePage {
     this.commentInput = page.getByPlaceholder('Write a comment...');
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
     this.commentLocator = page.locator('.card-text');
+    this.favoriteIcon = page.locator('.article-page .banner button', { hasText: 'Favorite' });
+    this.favoriteCount = this.favoriteIcon.locator('span.counter');
   }
 
   async openArticle(slug: string) {
@@ -81,7 +85,6 @@ export class ArticlePage extends BasePage {
   }
 
   async deleteComment(comment: string) {
-    // Находим карточку комментария
     const commentCard = this.page
       .locator('.card')
       .filter({
@@ -89,15 +92,30 @@ export class ArticlePage extends BasePage {
       })
       .first();
 
-    // Обрабатываем диалоговое окно
     this.page.once('dialog', async dialog => {
-      await dialog.accept(); // нажимаем "OK" в подтверждении
+      await dialog.accept();
     });
 
-    // Кликаем кнопку удаления внутри карточки
     await commentCard.locator('button:has(i.ion-trash-a)').click();
 
-    // Ждём, пока карточка исчезнет
     await expect(commentCard).toHaveCount(0);
+  }
+
+  async clickFavorite() {
+    await this.favoriteIcon.click();
+  }
+
+  async getFavoriteCount(): Promise<number> {
+    const text = await this.favoriteCount.textContent();
+    return Number(text);
+  }
+
+  async expectFavorited() {
+    await expect(this.favoriteIcon).toHaveClass(/btn-primary/);
+  }
+
+  async expectNotFavorited() {
+    await this.favoriteIcon.waitFor({ state: 'visible' });
+    await expect(this.favoriteIcon).toHaveClass(/btn-outline-primary/);
   }
 }

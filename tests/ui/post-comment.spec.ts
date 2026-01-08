@@ -20,7 +20,8 @@ test('Post comment UI tests', async ({ article, page }) => {
   await test.step('Delete comment and verify it is gone', async () => {
     await pages.article.deleteComment(commentText);
 
-    await expect(pages.article.commentLocator.filter({ hasText: commentText })
-    .first()).toHaveCount(0);
+    await expect(pages.article.commentLocator.filter({ hasText: commentText }).first()).toHaveCount(
+      0,
+    );
   });
 });
