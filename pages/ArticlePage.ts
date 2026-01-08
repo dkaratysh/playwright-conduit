@@ -29,7 +29,7 @@ export class ArticlePage extends BasePage {
     this.commentInput = page.getByPlaceholder('Write a comment...');
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
     this.commentLocator = page.locator('.card-text');
-    this.favoriteIcon = page.getByRole('button', { name: /favorite/i }).first();
+    this.favoriteIcon = page.locator('.article-page .banner button', { hasText: 'Favorite' });
     this.favoriteCount = this.favoriteIcon.locator('span.counter');
   }
 
@@ -115,6 +115,7 @@ export class ArticlePage extends BasePage {
   }
 
   async expectNotFavorited() {
+    await this.favoriteIcon.waitFor({ state: 'visible' });
     await expect(this.favoriteIcon).toHaveClass(/btn-outline-primary/);
   }
 }
