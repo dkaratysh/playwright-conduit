@@ -10,8 +10,9 @@ test('Favorite is not applied on API failure (pessimistic UI)', async ({
   let pages: Pages;
   pages = new Pages(page);
 
-  await loginAs(page, foreignUserToken);
-  await page.goto('/');
+  await test.step('Navigate to the article page', async () => {
+    await loginAs(page, foreignUserToken);
+    await page.goto('/');
 
   await page.route('**/api/articles/*/favorite', async route => {
     await route.fulfill({
@@ -25,11 +26,15 @@ test('Favorite is not applied on API failure (pessimistic UI)', async ({
 
   await pages.article.openArticle(article.slug);
   await pages.article.assertOpened(article.slug);
+  });
 
+  await test.step('Attempt to favorite the article and verify no change occurs', async () => {
+    
   const initialCount = await pages.article.getFavoriteCount();
 
   await pages.article.clickFavorite();
   
   expect(await pages.article.getFavoriteCount()).toBe(initialCount);
   await pages.article.expectNotFavorited();
+  });
 });

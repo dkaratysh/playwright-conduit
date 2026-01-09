@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/article.fixture';
+import { test } from '../../fixtures/article.fixture';
 import { Pages } from '../../pages/pages.factory';
 
 test('Post comment UI tests', async ({ article, page }) => {
@@ -12,16 +12,12 @@ test('Post comment UI tests', async ({ article, page }) => {
     await pages.article.assertOpened(article.slug);
     await pages.article.postComment(commentText);
 
-    await expect(
-      pages.article.commentLocator.filter({ hasText: commentText }).first(),
-    ).toBeVisible();
+    await pages.article.expectCommentVisible(commentText);
   });
 
   await test.step('Delete comment and verify it is gone', async () => {
     await pages.article.deleteComment(commentText);
 
-    await expect(pages.article.commentLocator.filter({ hasText: commentText }).first()).toHaveCount(
-      0,
-    );
+    await pages.article.expectNoComments(commentText);
   });
 });

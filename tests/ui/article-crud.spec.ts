@@ -2,7 +2,6 @@ import { test, expect } from '../../fixtures/article.fixture';
 import { buildArticleData } from '../../test-data/factories/article.factory';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import { Pages } from '../../pages/pages.factory';
-import { loginViaApi } from '../../helpers/api/auth.helper';
 
 test.describe('Article CRUD UI tests', () => {
   let pages: Pages;
@@ -11,7 +10,7 @@ test.describe('Article CRUD UI tests', () => {
     pages = new Pages(page);
   });
 
-  test('Create new article', async ({ page, request }) => {
+  test('Create new article', async ({ page, request, article }) => {
     const articleData = buildArticleData();
 
     await page.goto('/');
@@ -24,9 +23,8 @@ test.describe('Article CRUD UI tests', () => {
     await pages.article.expectBody(articleData.body);
 
     const slug = page.url().split('/article/')[1];
-    const token = await loginViaApi(request);
     await request.delete(`${process.env.BASE_URL}/api/articles/${slug}`, {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Token ${article.ownerToken}` },
     });
   });
 
