@@ -112,14 +112,17 @@ export class ArticlePage extends BasePage {
     );
   }
 
-  async clickFavorite() {
-    await this.favoriteIcon.click();
-  }
+async clickFavorite() {
+  await this.favoriteIcon.waitFor({ state: 'visible' });
+  await this.favoriteIcon.click();
+}
 
-  async getFavoriteCount(): Promise<number> {
-    const text = await this.favoriteCount.textContent();
-    return Number(text);
-  }
+async getFavoriteCount(): Promise<number> {
+  const counter = this.favoriteIcon.locator('span.counter');
+  await counter.waitFor({ state: 'attached' });
+  const text = await counter.textContent();
+  return Number(text?.replace(/[()]/g, '').trim() || 0);
+}
 
   async expectFavorited() {
     await expect(this.favoriteIcon).toHaveClass(/btn-primary/);
