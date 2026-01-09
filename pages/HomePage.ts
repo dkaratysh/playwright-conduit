@@ -1,6 +1,7 @@
 import { BasePage } from './BasePage';
 import type { Locator, Page } from '@playwright/test';
 import { NavbarComponent } from '../components/navbar.component';
+import { expect } from '@playwright/test';
 
 export class HomePage extends BasePage {
   readonly navbar: NavbarComponent;
@@ -14,7 +15,7 @@ export class HomePage extends BasePage {
     this.navbar = new NavbarComponent(this.page);
 
     this.banner = this.page.locator('.banner');
-    this.globalFeedTab = this.page.getByRole('link', { name: 'Global Feed' });
+    this.globalFeedTab = this.page.getByRole('button', { name: 'Global Feed' });
     this.yourFeedTab = this.page.getByRole('link', { name: 'Your Feed' });
   }
 
@@ -25,4 +26,21 @@ export class HomePage extends BasePage {
   async goto() {
     await this.page.goto('/');
   }
+
+  async navigateToGlobalFeed() {
+    await expect(this.globalFeedTab).toBeVisible();
+    await this.globalFeedTab.click();
+  }
+
+  async expectEmptyFeed() {
+    await expect(this.page.locator('.article-preview')).toHaveText('Articles not available.');
+}
+
+  async expectPageVisible() {
+    await expect(this.page.locator('app-root, body')).toBeVisible();
+  }
+
+  async expectMockedArticle(title: string) {
+    await expect(this.page.getByText(title)).toBeVisible();
+ } 
 }

@@ -24,7 +24,7 @@ export class ArticlePage extends BasePage {
     this.edit = page.getByRole('button', { name: ' Edit Article' });
     this.delete = page.getByRole('button', { name: 'Delete Article' });
     this.submitUpdate = page.getByRole('button', { name: 'Update Article' });
-    this.articleTitle = page.getByRole('heading');
+    this.articleTitle = page.locator('.article-page h1');
     this.articleBody = page.locator('.article-content');
     this.commentInput = page.getByPlaceholder('Write a comment...');
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
@@ -127,5 +127,9 @@ export class ArticlePage extends BasePage {
   async expectNotFavorited() {
     await this.favoriteIcon.waitFor({ state: 'visible' });
     await expect(this.favoriteIcon).toHaveClass(/btn-outline-primary/);
+  }
+
+  async expectedTitle(title: string) {
+    await expect(this.articleTitle).toHaveText(title);
   }
 }

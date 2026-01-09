@@ -1,10 +1,13 @@
 import { test } from '../../fixtures/network.fixture';
-import { expect } from '@playwright/test';
+import { Pages } from '../../pages/pages.factory';
 
 test('Global Feed — empty', async ({ page, mockArticles }) => {
+  const pages = new Pages(page);
+  const home = pages.home;
+
   await mockArticles('empty');
   await page.goto('/');
-  await page.getByRole('button', { name: 'Global Feed' }).click();
+  await home.navigateToGlobalFeed();
 
-  await expect(page.locator('.article-preview')).toHaveText('Articles not available.');
+  await home.expectEmptyFeed();
 });
