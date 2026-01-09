@@ -3,11 +3,6 @@ import { buildArticleData } from '../../test-data/factories/article.factory';
 import type { APIResponse } from '@playwright/test';
 
 test.describe('Articles API — unauthorized access', () => {
-  // let token: string;
-
-  // test.beforeEach(async ({ request }) => {
-  //   token = await loginViaApi(request);
-  // });
 
   test('Cannot create article without auth', async ({ request }) => {
     const articleData = buildArticleData();

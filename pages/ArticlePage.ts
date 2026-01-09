@@ -84,6 +84,10 @@ export class ArticlePage extends BasePage {
     await this.postCommentButton.click();
   }
 
+  async expectCommentVisible(comment: string) {
+    await expect(this.commentLocator.filter({ hasText: comment }).first()).toBeVisible();
+  }
+
   async deleteComment(comment: string) {
     const commentCard = this.page
       .locator('.card')
@@ -99,6 +103,12 @@ export class ArticlePage extends BasePage {
     await commentCard.locator('button:has(i.ion-trash-a)').click();
 
     await expect(commentCard).toHaveCount(0);
+  }
+
+  async expectNoComments(comment: string) {
+    await expect(this.commentLocator.filter({ hasText: comment }).first()).toHaveCount(
+      0,
+    );
   }
 
   async clickFavorite() {

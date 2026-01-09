@@ -5,7 +5,7 @@ import { user, userB } from '../test-data/auth/user.data';
 import type { Article } from '../types/article';
 
 type ArticleOwnershipFixtures = {
-  article: Article & { ownerToken: string }; // добавляем ownerToken внутрь article
+  article: Article & { ownerToken: string }; 
   foreignUserToken: string;
 };
 
