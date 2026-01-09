@@ -48,8 +48,9 @@ export class ArticlePage extends BasePage {
   async updateArticle(data: { title: string; description: string; body: string; tag?: string }) {
     await this.edit.nth(0).click();
     await this.form.fillArticle(data);
-    await this.submitUpdate.click();
-    await Promise.all([this.page.waitForURL(/#\/article\//), this.submitUpdate.click()]);
+    await Promise.all([
+      this.page.waitForURL(/#\/article\//), 
+      this.submitUpdate.click()]);
   }
 
   async expectTitle(text: string) {
