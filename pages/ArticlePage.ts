@@ -29,8 +29,8 @@ export class ArticlePage extends BasePage {
     this.commentInput = page.getByPlaceholder('Write a comment...');
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
     this.commentLocator = page.locator('.card-text');
-    this.favoriteIcon = page.locator('.article-page .banner .article-meta button.btn').filter({ hasText: 'Favorite' }).first();
-    this.favoriteCount = this.favoriteIcon.locator('span.counter');
+    this.favoriteIcon = this.favoriteIcon = this.page.getByRole('button', { name: /Favorite/i }).first();
+
   }
 
   async openArticle(slug: string) {
@@ -113,15 +113,13 @@ export class ArticlePage extends BasePage {
   }
 
 async clickFavorite() {
-  await this.favoriteIcon.waitFor({ state: 'visible' });
+  await expect(this.favoriteIcon).toBeVisible();
   await this.favoriteIcon.click();
 }
 
 async getFavoriteCount(): Promise<number> {
-  const counter = this.favoriteIcon.locator('span.counter');
-  await counter.waitFor({ state: 'attached' });
-  const text = await counter.textContent();
-  return Number(text?.replace(/[()]/g, '').trim() || 0);
+  const text = await this.favoriteIcon.locator('span.counter').innerText();
+  return Number(text.replace(/[()]/g, '').trim() || 0);
 }
 
   async expectFavorited() {
