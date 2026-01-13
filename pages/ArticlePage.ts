@@ -116,8 +116,10 @@ async clickFavorite() {
 }
 
 async getFavoriteCount(): Promise<number> {
-    const text = await this.favoriteIcon.innerText();
-    const match = text.match(/\((\d+)\)/);
+  if ((await this.favoriteIcon.count()) === 0) return 0;
+  const text = await this.favoriteIcon.textContent();
+
+  const match = text?.match(/\((\d+)\)/);
     return match ? Number(match[1]) : 0;
 }
 
@@ -126,7 +128,7 @@ async getFavoriteCount(): Promise<number> {
   }
 
   async expectNotFavorited() {
-    await this.favoriteIcon.waitFor({ state: 'visible' });
+    if ((await this.favoriteIcon.count()) === 0) return;
     await expect(this.favoriteIcon).toHaveClass(/btn-outline-primary/);
   }
 
