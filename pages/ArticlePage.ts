@@ -14,7 +14,6 @@ export class ArticlePage extends BasePage {
   readonly postCommentButton: Locator;
   readonly commentLocator: Locator;
   readonly favoriteIcon: Locator;
-  readonly favoriteCount: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -30,7 +29,6 @@ export class ArticlePage extends BasePage {
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
     this.commentLocator = page.locator('.card-text');
     this.favoriteIcon = this.page.getByRole('button', { name: /Favorite/i }).first();
-    this.favoriteCount = this.favoriteIcon.locator('span.counter');
 
   }
 
