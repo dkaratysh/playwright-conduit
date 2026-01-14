@@ -9,9 +9,11 @@ permissions:
 
 env:
   BASE_URL: https://conduit-realworld-example-app.fly.dev
+  USERNAME: ${{ secrets.USERNAME }}
   USER_EMAIL: ${{ secrets.USER_EMAIL }}
   USER_PASS: ${{ secrets.USER_PASS }}
 
+  USERNAME_B: ${{ secrets.USERNAME_B }}
   USER_B_EMAIL: ${{ secrets.USER_B_EMAIL }}
   USER_B_PASS: ${{ secrets.USER_B_PASS }}
 
