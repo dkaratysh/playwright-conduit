@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test ('[API][SMOKE][TAGS] GET /api.tags - should return list of public tags', async ({ request }) => {
+test ('GET /api/tags returns list of public tags', async ({ request }) => {
 
     const response = await request.get('/api/tags');
 

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { user } from '../../test-data/auth/user.data';
+import { user } from '../../../test-data/auth/user.data';
 
-test('[API][SMOKE][PROFILE] GET /api.profiles/:username - should return profile information', async ({
+test(' GET /api/profiles/:username returns profile information', async ({
   request,
 }) => {
 
