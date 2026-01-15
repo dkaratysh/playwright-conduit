@@ -1,8 +1,8 @@
-import { test, expect } from '../../fixtures/article.fixture';
-import { buildArticleData } from '../../test-data/factories/article.factory';
+import { test, expect } from '../../../../fixtures/article.fixture';
+import { buildArticleData } from '../../../../test-data/factories/article.factory';
 import type { APIResponse } from '@playwright/test';
 
-test.describe('Articles API — unauthorized access', () => {
+test.describe('api/articles — unauthenticated  access', () => {
 
   test('Cannot create article without auth', async ({ request }) => {
     const articleData = buildArticleData();

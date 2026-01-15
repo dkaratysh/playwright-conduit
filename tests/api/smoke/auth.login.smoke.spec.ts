@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
-import {user} from '../../test-data/auth/user.data';
+import {user} from '../../../test-data/auth/user.data';
 
-test ('[API] [SMOKE] [AUTH] POST /api/users/login - should return token', async ({ request }) => {
+test ('POST /api/users/login returns token', async ({ request }) => {
     const response = await request.post('/api/users/login', {
         data:{
             user: {

@@ -1,6 +1,6 @@
-import { test, expect } from '../../fixtures/article.fixture';
+import { test, expect } from '../../../../fixtures/article.fixture';
 
-test.describe('Articles API — unauthorized access', () => {
+test.describe('api/articles — unauthorized access', () => {
   test('Cannot update article of another user', async ({ request, article, foreignUserToken }) => {
     const response = await request.put(`/api/articles/${article.slug}`, {
       headers: {

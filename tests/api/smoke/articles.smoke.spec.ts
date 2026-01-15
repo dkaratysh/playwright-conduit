@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test ('[API][SMOKE][Articles] GET /api.articles - should return list of public articles', async ({ request }) => {
+test ('GET /api.articles returns list of public articles', async ({ request }) => {
 
     const response = await request.get('/api/articles');
 
