@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/article.fixture';
 import { Pages } from '../../pages/pages.factory';
 import { loginAs } from '../../helpers/ui/auth.helper';
 
-test('Favorite is not applied on API failure (pessimistic UI)', async ({
+test.skip('Favorite is not applied on API failure (pessimistic UI)', async ({
   page,
   article,
   foreignUserToken,

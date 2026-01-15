@@ -1,5 +1,5 @@
-import { test, expect } from '../../fixtures/article.fixture';
-import { buildArticleData } from '../../test-data/factories/article.factory';
+import { test, expect } from '../../../../fixtures/article.fixture';
+import { buildArticleData } from '../../../../test-data/factories/article.factory';
 import type { APIResponse } from '@playwright/test';
 
 test.describe('api/articles — unauthenticated  access', () => {

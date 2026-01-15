@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/article.fixture';
+import { test, expect } from '../../../../fixtures/article.fixture';
 
 test.describe('api/articles — unauthorized access', () => {
   test('Cannot update article of another user', async ({ request, article, foreignUserToken }) => {
