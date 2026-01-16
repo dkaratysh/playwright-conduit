@@ -1,11 +1,11 @@
 import { test as base, expect } from '@playwright/test';
-import { loginViaApi } from '../helpers/api/auth.helper';
-import { createArticle, deleteArticle } from '../helpers/api/article.helper';
+import { loginViaApi } from '../helpers/api/auth';
+import { createArticle, deleteArticle } from '../helpers/api/article';
 import { user, userB } from '../test-data/auth/user.data';
 import type { Article } from '../types/article';
 
 type ArticleOwnershipFixtures = {
-  article: Article & { ownerToken: string }; 
+  article: Article & { ownerToken: string };
   foreignUserToken: string;
 };
 
