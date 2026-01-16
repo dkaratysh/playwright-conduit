@@ -1,5 +1,6 @@
 import type { APIRequestContext } from '@playwright/test';
 import type { Article } from '../../types/article';
+import { buildArticleData, type ArticleFactoryData } from '../../test-data/factories/article.factory'
 
 type CreateArticleOptions = {
   token?: string;
@@ -18,12 +19,7 @@ export async function createArticle(
     );
   }
 
-  const articleData = {
-    title: options?.overrides?.title ?? `Test article ${Date.now()}`,
-    description: options?.overrides?.description ?? 'About Playwright',
-    body: options?.overrides?.body ?? 'This article was created by Playwright test',
-    tagList: options?.overrides?.tagList ?? ['playwright'],
-  };
+  const articleData: ArticleFactoryData = buildArticleData(options?.overrides);
 
   const response = await request.post('/api/articles', {
     data: { article: articleData },
