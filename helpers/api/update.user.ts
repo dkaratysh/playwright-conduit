@@ -1,4 +1,4 @@
-import type {TempUser} from '../../helpers/api/temp.user.helper'
+import type { TempUser } from './temp.user';
 
 export type UserUpdatePayload = {
   username?: string;
@@ -10,14 +10,14 @@ export type UserUpdatePayload = {
 
 export function buildUserUpdatePayload(
   user: TempUser,
-  overrides?: Partial<UserUpdatePayload>
+  overrides?: Partial<UserUpdatePayload>,
 ): UserUpdatePayload {
   const defaultPayload: UserUpdatePayload = {
     username: user.username,
-    email:    user.email,
-    bio:      'Default bio',
-    image:    'https://example.com/default-avatar.png',
-    password: 'Upd123'
+    email: user.email,
+    bio: 'Default bio',
+    image: 'https://example.com/default-avatar.png',
+    password: 'Upd123',
   };
 
   const payload = { ...defaultPayload, ...overrides };
