@@ -1,18 +1,10 @@
-import type { TempUser } from './temp.user';
-
-export type UserUpdatePayload = {
-  username?: string;
-  email?: string;
-  bio?: string;
-  image?: string;
-  password?: string;
-};
+import type { UpdateUserPayload } from '../../types/user';
 
 export function buildUserUpdatePayload(
-  user: TempUser,
-  overrides?: Partial<UserUpdatePayload>,
-): UserUpdatePayload {
-  const defaultPayload: UserUpdatePayload = {
+  user: UpdateUserPayload,
+  overrides?: Partial<UpdateUserPayload>,
+): UpdateUserPayload {
+  const defaultPayload: UpdateUserPayload = {
     username: user.username,
     email: user.email,
     bio: 'Default bio',

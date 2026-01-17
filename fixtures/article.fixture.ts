@@ -4,17 +4,21 @@ import { createArticle, deleteArticle } from '../helpers/api/article';
 import { user, userB } from '../test-data/auth/user.data';
 import type { Article } from '../types/article';
 
-type ArticleOwnershipFixtures = {
-  article: Article & { ownerToken: string };
-  foreignUserToken: string;
+interface ArticleOwnershipToken extends Article {
+  ownerToken: string
 };
+
+interface ArticleOwnershipFixtures {
+  article: ArticleOwnershipToken;
+  foreignUserToken: string
+}
 
 export const test = base.extend<ArticleOwnershipFixtures>({
   article: async ({ request }, use) => {
     const ownerToken = await loginViaApi(request, user);
     const article = await createArticle(request, { token: ownerToken });
 
-    const mutableArticle: Article & { ownerToken: string } = {
+    const mutableArticle: ArticleOwnershipToken = {
       ...article,
       ownerToken,
     };
