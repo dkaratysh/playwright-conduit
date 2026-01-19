@@ -1,13 +1,9 @@
 import type { APIRequestContext } from '@playwright/test';
-
-type Credentials = {
-  email: string;
-  password: string;
-};
+import type { UserLoginPayload } from '../../types/user';
 
 export async function loginViaApi(
   request: APIRequestContext,
-  credentials?: Credentials,
+  credentials?: UserLoginPayload,
 ): Promise<string> {
   const email = credentials?.email ?? process.env.USER_EMAIL;
   const password = credentials?.password ?? process.env.USER_PASS;

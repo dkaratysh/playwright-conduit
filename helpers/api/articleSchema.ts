@@ -1,26 +1,33 @@
 import type { Article } from '../../types/article';
 import { expect } from '@playwright/test';
 
-export function validateArticleSchema(article: any): asserts article is Article {
+export function validateArticleSchema(article: unknown): asserts article is Article {
+  expect(typeof article).toBe('object');
+  expect(article).not.toBeNull();
+
+  const a = article as Record<string, unknown>;
+
   expect(article).toHaveProperty('slug');
   expect(article).toHaveProperty('title');
   expect(article).toHaveProperty('description');
   expect(article).toHaveProperty('body');
   expect(article).toHaveProperty('tagList');
-  expect(Array.isArray(article.tagList)).toBe(true);
+  expect(Array.isArray(a.tagList)).toBe(true);
   expect(article).toHaveProperty('createdAt');
   expect(article).toHaveProperty('updatedAt');
   expect(article).toHaveProperty('favorited');
-  expect(typeof article.favorited).toBe('boolean');
+  expect(typeof a.favorited).toBe('boolean');
   expect(article).toHaveProperty('favoritesCount');
-  expect(typeof article.favoritesCount).toBe('number');
-
+  expect(typeof a.favoritesCount).toBe('number');
   expect(article).toHaveProperty('author');
-  expect(article.author).toHaveProperty('username');
-  expect(article.author).toHaveProperty('bio');
-  expect(article.author).toHaveProperty('image');
-  expect(article.author).toHaveProperty('following');
-  expect(typeof article.author.following).toBe('boolean');
-  expect(article.author).toHaveProperty('followersCount');
-  expect(typeof article.author.followersCount).toBe('number');
+
+  const author = a.author as Record<string, unknown>;
+
+  expect(author).toHaveProperty('username');
+  expect(author).toHaveProperty('bio');
+  expect(author).toHaveProperty('image');
+  expect(author).toHaveProperty('following');
+  expect(typeof author.following).toBe('boolean');
+  expect(author).toHaveProperty('followersCount');
+  expect(typeof author.followersCount).toBe('number');
 }
