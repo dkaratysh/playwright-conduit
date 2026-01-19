@@ -3,8 +3,8 @@ export interface User {
   password?: string
   username?: string;
   token?: string;
-  bio?: string;
-  image?: string;
+  bio?: string | null;
+  image?: string | null;
 };
 
 export type UpdateUserPayload = Partial<User>;
