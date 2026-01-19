@@ -8,7 +8,7 @@ test('login token works on protected endpoint', async ({request, authToken}) => 
     const response = await request.get('/api/user', {
         headers: { Authorization: `Token ${authToken}`}
     });
-    
+
     expect(response.status()).toBe(200);
     
     const {user} = await response.json();  
