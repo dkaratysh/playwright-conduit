@@ -1,6 +1,9 @@
 import type { APIRequestContext } from '@playwright/test';
 import type { Article } from '../../types/article';
-import { buildArticleData, type ArticleFactoryData } from '../../test-data/factories/article.factory'
+import {
+  buildArticleData,
+  type ArticleFactoryData,
+} from '../../test-data/factories/article.factory';
 
 type CreateArticleOptions = {
   token?: string;

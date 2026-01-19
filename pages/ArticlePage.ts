@@ -29,7 +29,6 @@ export class ArticlePage extends BasePage {
     this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
     this.commentLocator = page.locator('.card-text');
     this.favoriteIcon = this.page.getByRole('button', { name: /Favorite/i }).first();
-
   }
 
   async openArticle(slug: string) {
@@ -47,9 +46,7 @@ export class ArticlePage extends BasePage {
   async updateArticle(data: { title: string; description: string; body: string; tag?: string }) {
     await this.edit.nth(0).click();
     await this.form.fillArticle(data);
-    await Promise.all([
-      this.page.waitForURL(/#\/article\//), 
-      this.submitUpdate.click()]);
+    await Promise.all([this.page.waitForURL(/#\/article\//), this.submitUpdate.click()]);
   }
 
   async expectTitle(text: string) {
@@ -106,22 +103,20 @@ export class ArticlePage extends BasePage {
   }
 
   async expectNoComments(comment: string) {
-    await expect(this.commentLocator.filter({ hasText: comment }).first()).toHaveCount(
-      0,
-    );
+    await expect(this.commentLocator.filter({ hasText: comment }).first()).toHaveCount(0);
   }
 
-async clickFavorite() {
-  await this.favoriteIcon.click({ force: true });
-}
+  async clickFavorite() {
+    await this.favoriteIcon.click({ force: true });
+  }
 
-async getFavoriteCount(): Promise<number> {
-  if ((await this.favoriteIcon.count()) === 0) return 0;
-  const text = await this.favoriteIcon.textContent();
+  async getFavoriteCount(): Promise<number> {
+    if ((await this.favoriteIcon.count()) === 0) return 0;
+    const text = await this.favoriteIcon.textContent();
 
-  const match = text?.match(/\((\d+)\)/);
+    const match = text?.match(/\((\d+)\)/);
     return match ? Number(match[1]) : 0;
-}
+  }
 
   async expectFavorited() {
     await expect(this.favoriteIcon).toHaveClass(/btn-primary/);

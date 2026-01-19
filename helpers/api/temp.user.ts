@@ -5,7 +5,7 @@ export function generateTempUser(): UpdateUserPayload {
   const randomSuffix = Date.now();
   return {
     username: `testuser${randomSuffix}`,
-    email:    `test${randomSuffix}@example.com`,
+    email: `test${randomSuffix}@example.com`,
     password: 'Password123!',
   };
 }

@@ -3,7 +3,6 @@ import { buildArticleData } from '../../../../test-data/factories/article.factor
 import type { APIResponse } from '@playwright/test';
 
 test.describe('api/articles — unauthenticated  access', () => {
-
   test('Cannot create article without auth', async ({ request }) => {
     const articleData = buildArticleData();
 

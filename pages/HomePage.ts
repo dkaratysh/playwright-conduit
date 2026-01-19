@@ -34,7 +34,7 @@ export class HomePage extends BasePage {
 
   async expectEmptyFeed() {
     await expect(this.page.locator('.article-preview')).toHaveText('Articles not available.');
-}
+  }
 
   async expectPageVisible() {
     await expect(this.page.locator('app-root, body')).toBeVisible();
@@ -42,5 +42,5 @@ export class HomePage extends BasePage {
 
   async expectMockedArticle(title: string) {
     await expect(this.page.getByText(title)).toBeVisible();
- } 
+  }
 }

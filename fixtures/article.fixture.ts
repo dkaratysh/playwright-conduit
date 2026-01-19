@@ -5,12 +5,12 @@ import { user, userB } from '../test-data/auth/user.data';
 import type { Article } from '../types/article';
 
 interface ArticleOwnershipToken extends Article {
-  ownerToken: string
-};
+  ownerToken: string;
+}
 
 interface ArticleOwnershipFixtures {
   article: ArticleOwnershipToken;
-  foreignUserToken: string
+  foreignUserToken: string;
 }
 
 export const test = base.extend<ArticleOwnershipFixtures>({

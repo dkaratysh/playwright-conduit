@@ -6,7 +6,7 @@ export function validateArticleSchema(article: unknown): asserts article is Arti
   expect(article).not.toBeNull();
 
   const a = article as Record<string, unknown>;
-  
+
   expect(article).toHaveProperty('slug');
   expect(article).toHaveProperty('title');
   expect(article).toHaveProperty('description');
@@ -22,7 +22,7 @@ export function validateArticleSchema(article: unknown): asserts article is Arti
   expect(article).toHaveProperty('author');
 
   const author = a.author as Record<string, unknown>;
-  
+
   expect(author).toHaveProperty('username');
   expect(author).toHaveProperty('bio');
   expect(author).toHaveProperty('image');
