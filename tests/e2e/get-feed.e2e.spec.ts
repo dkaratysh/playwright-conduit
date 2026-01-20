@@ -1,11 +1,5 @@
 import { test, expect } from '../../fixtures/article.fixture';
-
-type FeedArticle = {
-  slug: string;
-  author: {
-    username: string;
-  };
-};
+import type { Article } from '../../types/article';
 
 test('API e2e - Follow the author and get followed article in user feed', async ({
   request,
@@ -34,8 +28,8 @@ test('API e2e - Follow the author and get followed article in user feed', async 
 
     expect(response.status()).toBe(200);
 
-    const { articles } = (await response.json()) as {
-      articles: FeedArticle[];
+    const { articles } = await response.json() as {
+      articles: Article[];
     };
 
     const articleFromFeed = articles.find(article => article.slug === slug);
