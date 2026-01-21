@@ -5,13 +5,13 @@ import { loginAs } from '../../helpers/ui/auth.helper';
 test.skip('Favorite is not applied on API failure (pessimistic UI)', async ({
   page,
   article,
-  foreignUserToken,
+  foreignUser,
 }) => {
   let pages: Pages;
   pages = new Pages(page);
 
   await test.step('Navigate to the article page', async () => {
-    await loginAs(page, foreignUserToken);
+    await loginAs(page, foreignUser.token);
     await page.goto('/');
 
     await page.route('**/api/articles/*/favorite', async route => {

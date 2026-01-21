@@ -1,10 +1,10 @@
 import { test, expect } from '../../../../fixtures/article.fixture';
 
 test.describe('api/articles — unauthorized access', () => {
-  test('Cannot update article of another user', async ({ request, article, foreignUserToken }) => {
+  test('Cannot update article of another user', async ({ request, article, foreignUser }) => {
     const response = await request.put(`/api/articles/${article.slug}`, {
       headers: {
-        Authorization: `Token ${foreignUserToken}`,
+        Authorization: `Token ${foreignUser.token}`,
       },
       data: {
         article: {
@@ -20,10 +20,10 @@ test.describe('api/articles — unauthorized access', () => {
     expect(body.errors.body).toContain('You are not the author of this article');
   });
 
-  test('Cannot delete article of another user', async ({ request, article, foreignUserToken }) => {
+  test('Cannot delete article of another user', async ({ request, article, foreignUser }) => {
     const response = await request.delete(`/api/articles/${article.slug}`, {
       headers: {
-        Authorization: `Token ${foreignUserToken}`,
+        Authorization: `Token ${foreignUser.token}`,
       },
     });
 
