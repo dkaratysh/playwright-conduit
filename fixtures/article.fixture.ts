@@ -8,9 +8,14 @@ interface ArticleOwnershipToken extends Article {
   ownerToken: string;
 }
 
+interface ForeignUser {
+  token: string;
+  username: string;
+}
+
 interface ArticleOwnershipFixtures {
   article: ArticleOwnershipToken;
-  foreignUserToken: string;
+  foreignUser: ForeignUser;
 }
 
 export const test = base.extend<ArticleOwnershipFixtures>({
@@ -28,9 +33,12 @@ export const test = base.extend<ArticleOwnershipFixtures>({
     await deleteArticle(request, mutableArticle.slug, ownerToken);
   },
 
-  foreignUserToken: async ({ request }, use) => {
+  foreignUser: async ({ request }, use) => {
     const token = await loginViaApi(request, userB);
-    await use(token);
+    await use({
+      token,
+      username: userB.username,
+    });
   },
 });
 

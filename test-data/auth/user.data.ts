@@ -5,6 +5,7 @@ export const user = {
 };
 
 export const userB = {
+  username: process.env.USERNAME_B!,
   email: process.env.USER_B_EMAIL!,
   password: process.env.USER_B_PASS!,
 };
