@@ -4,7 +4,6 @@ import { createArticle, deleteArticle } from '../helpers/api/article';
 import { user, userB } from '../test-data/auth/user.data';
 import type { Article } from '../types/article';
 
-
 interface ArticleOwnershipToken extends Article {
   ownerToken: string;
 }
@@ -36,9 +35,9 @@ export const test = base.extend<ArticleOwnershipFixtures>({
 
   foreignUser: async ({ request }, use) => {
     const token = await loginViaApi(request, userB);
-    await use({ 
-      token, 
-      username: userB.username
+    await use({
+      token,
+      username: userB.username,
     });
   },
 });
