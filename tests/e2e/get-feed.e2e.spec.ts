@@ -1,45 +1,90 @@
 import { test, expect } from '../../fixtures/article.fixture';
 import type { Article } from '../../types/article';
 
-test('API e2e - Follow the author and get followed article in user feed', async ({
-  request,
-  article,
-  foreignUserToken,
-}) => {
-  const username = article.author.username;
-  const slug = article.slug;
+test.describe('API e2e - Follow/Unfollow scenario', () => {
+  test('Follow the author and get followed article in user feed', async ({
+    request,
+    article,
+    foreignUserToken,
+  }) => {
+    const authorUsername = article.author.username;
+    const slug = article.slug;
 
-  await test.step('POST /api/profiles/:username/follow - foreign user follows the owner', async () => {
-    const response = await request.post(`/api/profiles/${username}/follow`, {
-      headers: { Authorization: `Token ${foreignUserToken}` },
+    await test.step('POST /api/profiles/:username/follow - foreign user follows the owner', async () => {
+      const response = await request.post(`/api/profiles/${authorUsername}/follow`, {
+        headers: { Authorization: `Token ${foreignUserToken}` },
+      });
+
+      expect(response.status()).toBe(200);
+
+      const { profile } = await response.json();
+      expect(profile.username).toBe(authorUsername);
+      expect(profile.following).toBeTruthy();
     });
 
-    expect(response.status()).toBe(200);
+    await test.step('GET /api/articles/feed - check the followed article in feed ', async () => {
+      const response = await request.get(`/api/articles/feed`, {
+        headers: { Authorization: `Token ${foreignUserToken}` },
+      });
 
-    const { profile } = await response.json();
-    expect(profile.username).toBe(username);
-    expect(profile.following).toBeTruthy();
+      expect(response.status()).toBe(200);
+
+      const { articles } = (await response.json()) as {
+        articles: Article[];
+      };
+
+      const articleFromFeed = articles.find(article => article.slug === slug);
+
+      expect(articleFromFeed).toBeDefined();
+
+      if (!articleFromFeed) {
+        throw new Error(`Article with slug "${slug}" was not found in feed`);
+      }
+
+      expect(articleFromFeed.author.username).toBe(authorUsername);
+    });
   });
 
-  await test.step('GET /api/articles/feed - check the followed article in feed ', async () => {
-    const response = await request.get(`/api/articles/feed`, {
-      headers: { Authorization: `Token ${foreignUserToken}` },
+  test('Unfollow the autor and check if feed is empty', async ({
+    request,
+    article,
+    foreignUserToken,
+  }) => {
+    const authorUsername = article.author.username;
+
+    await test.step('POST /api/profiles/:username/follow - foreign user follows the owner', async () => {
+      const response = await request.post(`/api/profiles/${authorUsername}/follow`, {
+        headers: { Authorization: `Token ${foreignUserToken}` },
+      });
+
+      expect(response.status()).toBe(200);
     });
 
-    expect(response.status()).toBe(200);
+    await test.step('DELETE /api/profiles/:username/unfollow - foreign user unfollows the owner', async () => {
+      const response = await request.delete(`/api/profiles/${authorUsername}/follow`, {
+        headers: { Authorization: `Token ${foreignUserToken}` },
+      });
 
-    const { articles } = await response.json() as {
-      articles: Article[];
-    };
+      expect(response.status()).toBe(200);
 
-    const articleFromFeed = articles.find(article => article.slug === slug);
+      const { profile } = await response.json();
+      expect(profile.username).toBe(authorUsername);
+      expect(profile.following).toBe(false);
+    });
 
-    expect(articleFromFeed).toBeDefined();
+    await test.step('GET /api/articles/feed - check the if the article is not in the feed ', async () => {
+      const response = await request.get(`/api/articles/feed`, {
+        headers: { Authorization: `Token ${foreignUserToken}` },
+      });
 
-    if (!articleFromFeed) {
-      throw new Error(`Article with slug "${slug}" was not found in feed`);
-    }
+      expect(response.status()).toBe(200);
 
-    expect(articleFromFeed.author.username).toBe(username);
+      const { articles } = (await response.json()) as {
+        articles: Article[];
+      };
+
+      const articleFromAuthor = articles.find(a => a.author.username === authorUsername);
+      expect(articleFromAuthor).toBeUndefined();
+    });
   });
 });
