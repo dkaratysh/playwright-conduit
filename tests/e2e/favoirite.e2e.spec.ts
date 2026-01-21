@@ -61,18 +61,22 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
       });
       expect(response.status()).toBe(200);
     });
+
     await test.step('DELETE /api/articles/:slug/favorite', async () => {
       const response = await request.delete(`/api/articles/${slug}/favorite`, {
         headers: { Authorization: `Token ${token}` },
       });
+
       expect(response.status()).toBe(200);
       const { article } = (await response.json()) as {
         article: Article;
       };
+
       expect(article.slug).toBe(slug);
       expect(article.author.username).toBe(authorUsername);
       expect(article.favorited).toBe(false);
     });
+
     await test.step('GET /api/articles?favorited=:username', async () => {
       const response = await request.get(`/api/articles?favorited=${username}`, {
         headers: { Authorization: `Token ${token}` },
