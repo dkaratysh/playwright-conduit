@@ -16,3 +16,5 @@ export interface Article {
     followersCount: number;
   };
 }
+
+export type ArticleSlug = string & {readonly __brand : ArticleSlug };

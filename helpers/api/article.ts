@@ -1,28 +1,27 @@
 import type { APIRequestContext } from '@playwright/test';
-import type { Article } from '../../types/article';
+import type { Article, ArticleSlug } from '../../types/article';
 import {
   buildArticleData,
   type ArticleFactoryData,
 } from '../../test-data/factories/article.factory';
+import type { AuthToken } from '../../types/auth';
 
 type CreateArticleOptions = {
-  token?: string;
+  token: AuthToken;
   overrides?: Partial<Omit<Article, 'slug'>>;
 };
 
+type CreateArticleResponse = {
+  article: Article
+}
+
 export async function createArticle(
   request: APIRequestContext,
-  options?: CreateArticleOptions,
+  options: CreateArticleOptions,
 ): Promise<Article> {
-  const token = options?.token;
+  const { token, overrides } = options;
 
-  if (!token) {
-    throw new Error(
-      'createArticle requires token. ' + 'Login must be done outside of article.helper.ts',
-    );
-  }
-
-  const articleData: ArticleFactoryData = buildArticleData(options?.overrides);
+  const articleData: ArticleFactoryData = buildArticleData(overrides);
 
   const response = await request.post('/api/articles', {
     data: { article: articleData },
@@ -37,14 +36,17 @@ export async function createArticle(
     throw new Error(`Failed to create article: ${response.status()} — ${text}`);
   }
 
-  const data = JSON.parse(text);
-  return data.article;
+  const data = JSON.parse(text) as CreateArticleResponse;
+  return {
+    ...data.article,
+    slug: data.article.slug as ArticleSlug,
+};
 }
 
 export async function deleteArticle(
   request: APIRequestContext,
-  slug: string,
-  token?: string,
+  slug: ArticleSlug,
+  token: AuthToken,
 ): Promise<void> {
   if (!token) {
     throw new Error(

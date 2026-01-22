@@ -1,9 +1,9 @@
-export type ArticleFactoryData = {
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-};
+import type { Article } from '../../types/article';
+
+export type ArticleFactoryData = Pick<
+  Article,
+  'title'| 'description' | 'body' | 'tagList'
+>;
 
 export function buildArticleData(overrides: Partial<ArticleFactoryData> = {}): ArticleFactoryData {
   return {
