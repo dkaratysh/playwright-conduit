@@ -1,5 +1,10 @@
 import { test, expect } from '../../fixtures/article.fixture';
-import type { CreateCommentResponse, GetCommentsResponse } from '../../types/comment';
+import {
+  parseCommentFromApi,
+  parseCommentsFromApi,
+  type CommentId,
+} from '../../types/comment';
+
 
 test('API e2e - Post comment and get list of commnets', async ({
   request,
@@ -10,7 +15,7 @@ test('API e2e - Post comment and get list of commnets', async ({
   const slug = article.slug;
   const commentBody = `Test comment ${Date.now()}`;
 
-  let createdCommentId: number;
+  let createdCommentId: CommentId;
 
   await test.step('POST /api/articles/:slug/comments', async () => {
     const response = await request.post(`/api/articles/${slug}/comments`, {
@@ -24,11 +29,12 @@ test('API e2e - Post comment and get list of commnets', async ({
 
     expect(response.status()).toBe(201);
 
-    const { comment } = (await response.json()) as CreateCommentResponse;
-    expect(comment.body).toBe(commentBody);
-    expect(comment.author.username).not.toBe(authorUserName);
+    const { comment } = await response.json();
+    const typedComment = parseCommentFromApi(comment)
+    expect(typedComment.body).toBe(commentBody);
+    expect(typedComment.author.username).not.toBe(authorUserName);
 
-    createdCommentId = comment.id;
+    createdCommentId = typedComment.id;
   });
 
   await test.step('GET /api/articles/:slug/comments', async () => {
@@ -37,8 +43,10 @@ test('API e2e - Post comment and get list of commnets', async ({
     });
 
     expect(response.status()).toBe(200);
-    const { comments } = (await response.json()) as GetCommentsResponse;
-    const createdComments = comments.find(comments => comments.id === createdCommentId);
+    const { comments } = await response.json();
+    const typedComments = parseCommentsFromApi(comments);
+    const createdComments = typedComments.find(comments => comments.id === createdCommentId);
+
     expect(createdComments).toBeDefined();
   });
 });
