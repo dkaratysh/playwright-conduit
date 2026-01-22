@@ -2,7 +2,7 @@ import type { APIRequestContext } from '@playwright/test';
 import type { Article, ArticleSlug } from '../../types/article';
 import {
   buildArticleData,
-  type ArticleFactoryData,
+  type ArticleInput,
 } from '../../test-data/factories/article.factory';
 import type { AuthToken } from '../../types/auth';
 
@@ -21,7 +21,7 @@ export async function createArticle(
 ): Promise<Article> {
   const { token, overrides } = options;
 
-  const articleData: ArticleFactoryData = buildArticleData(overrides);
+  const articleData: ArticleInput = buildArticleData(overrides);
 
   const response = await request.post('/api/articles', {
     data: { article: articleData },
