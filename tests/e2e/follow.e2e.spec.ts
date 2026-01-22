@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/article.fixture';
-import type { Article } from '../../types/article';
+import { parseArticleFromApi, parseArticlesFromApi } from '../../types/article';
 
 test.describe('API e2e - Follow/Unfollow scenario', () => {
   test('Follow the author and get followed article in user feed', async ({
@@ -17,7 +17,7 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const { profile } = await response.json();
+      const{ profile } = await response.json();
       expect(profile.username).toBe(authorUsername);
       expect(profile.following).toBeTruthy();
     });
@@ -29,11 +29,10 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles } = (await response.json()) as {
-        articles: Article[];
-      };
+      const { articles } = await response.json() as { articles: any[] };
+      const typedArticles = articles.map(parseArticleFromApi);
 
-      const articleFromFeed = articles.find(article => article.slug === slug);
+      const articleFromFeed = typedArticles.find(article => article.slug === slug);
 
       expect(articleFromFeed).toBeDefined();
 
@@ -79,11 +78,10 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles } = (await response.json()) as {
-        articles: Article[];
-      };
+      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const typedArticles = parseArticlesFromApi(rawArticles);
 
-      const articleFromAuthor = articles.find(a => a.author.username === authorUsername);
+      const articleFromAuthor = typedArticles.find(a => a.author.username === authorUsername);
       expect(articleFromAuthor).toBeUndefined();
     });
   });
