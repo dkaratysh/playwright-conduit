@@ -2,6 +2,7 @@ import { test, expect } from '../../fixtures/article.fixture';
 import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
 import type { Article } from '../../types/article';
 import { Pages } from '../../pages/pages.factory';
+import { toArticleSlug } from '../../types/article';
 
 test.describe('Article edit flow (API - UI - API)', () => {
   test('user edits article via UI', async ({ page, request, article }) => {
@@ -14,7 +15,7 @@ test.describe('Article edit flow (API - UI - API)', () => {
       await pages.article.updateArticle(updatedArticle);
 
       await pages.article.expectTitle(updatedArticle.title);
-      article.slug = page.url().split('/article/')[1];
+      article.slug = toArticleSlug(page.url().split('/article/')[1]);
     });
 
     await test.step('Verify updated article via API', async () => {

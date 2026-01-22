@@ -1,10 +1,11 @@
 import type { APIRequestContext } from '@playwright/test';
 import type { UserLoginPayload } from '../../types/user';
+import type { AuthToken } from '../../types/auth';
 
 export async function loginViaApi(
   request: APIRequestContext,
   credentials?: UserLoginPayload,
-): Promise<string> {
+): Promise<AuthToken> {
   const email = credentials?.email ?? process.env.USER_EMAIL;
   const password = credentials?.password ?? process.env.USER_PASS;
 
@@ -25,5 +26,5 @@ export async function loginViaApi(
   }
 
   const data = JSON.parse(text);
-  return data.user.token as string;
+  return data.user.token as AuthToken;
 }

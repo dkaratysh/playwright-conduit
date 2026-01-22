@@ -1,5 +1,5 @@
 export interface Comment {
-  id: number;
+  id: CommentId;
   body: string;
   updatedAt: string;
   createdAt: string;
@@ -12,10 +12,15 @@ export interface Comment {
   };
 }
 
-export interface CreateCommentResponse {
-  comment: Comment;
+export type CommentId = number & { readonly __brand: 'CommentId' };
+
+export function parseCommentFromApi(raw: any): Comment {
+    return {
+        ...raw,
+        id: raw.id as CommentId,
+    };
 }
 
-export interface GetCommentsResponse {
-  comments: Comment[];
+export function parseCommentsFromApi(raw: any[]): Comment[] {
+    return raw.map(parseCommentFromApi)
 }

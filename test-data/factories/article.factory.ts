@@ -1,11 +1,11 @@
-export type ArticleFactoryData = {
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-};
+import type { Article } from '../../types/article';
 
-export function buildArticleData(overrides: Partial<ArticleFactoryData> = {}): ArticleFactoryData {
+export type ArticleInput = Pick<
+  Article,
+  'title'| 'description' | 'body' | 'tagList'
+>;
+
+export function buildArticleData(overrides: Partial<ArticleInput> = {}): ArticleInput {
   return {
     title: overrides.title ?? `Test article ${Date.now()}`,
     description: overrides.description ?? 'About Playwright',

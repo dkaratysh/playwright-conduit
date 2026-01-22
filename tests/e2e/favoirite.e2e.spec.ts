@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/article.fixture';
-import type { Article } from '../../types/article';
+import { parseArticleFromApi, parseArticlesFromApi } from '../../types/article';
+
 
 test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
   test('Mark article as favorite and check them in Favorited articles', async ({
@@ -18,12 +19,11 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
 
       expect(response.status()).toBe(200);
 
-      const { article } = (await response.json()) as {
-        article: Article;
-      };
-      expect(article.slug).toBe(slug);
-      expect(article.author.username).toBe(authorUsername);
-      expect(article.favorited).toBe(true);
+      const { article: rawArticle } = await response.json() as { article: any };
+      const articleFromApi = parseArticleFromApi(rawArticle);
+      expect(articleFromApi.slug).toBe(slug);
+      expect(articleFromApi.author.username).toBe(authorUsername);
+      expect(articleFromApi.favorited).toBe(true);
     });
 
     await test.step('GET /api/articles?favorited=:username', async () => {
@@ -33,10 +33,10 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles } = (await response.json()) as {
-        articles: Article[];
-      };
-      const articlesFromFavorite = articles.find(article => article.slug === slug);
+      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const typedArticles = parseArticlesFromApi(rawArticles);
+      const articlesFromFavorite = typedArticles.find(article => article.slug === slug);
+
       expect(articlesFromFavorite).toBeDefined();
 
       if (!articlesFromFavorite) {
@@ -68,13 +68,13 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
       });
 
       expect(response.status()).toBe(200);
-      const { article } = (await response.json()) as {
-        article: Article;
-      };
 
-      expect(article.slug).toBe(slug);
-      expect(article.author.username).toBe(authorUsername);
-      expect(article.favorited).toBe(false);
+      const { article: rawArticle } = await response.json() as { article: any };
+      const articleFromApi = parseArticleFromApi(rawArticle);
+
+      expect(articleFromApi.slug).toBe(slug);
+      expect(articleFromApi.author.username).toBe(authorUsername);
+      expect(articleFromApi.favorited).toBe(false);
     });
 
     await test.step('GET /api/articles?favorited=:username', async () => {
@@ -83,10 +83,10 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
       });
       expect(response.status()).toBe(200);
 
-      const { articles } = (await response.json()) as {
-        articles: Article[];
-      };
-      const articleFromFeed = articles.find(article => article.slug === slug);
+      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const typedArticles = parseArticlesFromApi(rawArticles);
+      const articleFromFeed = typedArticles.find(article => article.slug === slug);
+      
       expect(articleFromFeed).toBeUndefined();
     });
   });

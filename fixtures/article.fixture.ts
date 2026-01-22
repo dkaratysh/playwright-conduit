@@ -2,14 +2,16 @@ import { test as base, expect } from '@playwright/test';
 import { loginViaApi } from '../helpers/api/auth';
 import { createArticle, deleteArticle } from '../helpers/api/article';
 import { user, userB } from '../test-data/auth/user.data';
-import type { Article } from '../types/article';
+import type { Article, ArticleSlug } from '../types/article';
+import type { AuthToken } from '../types/auth';
 
-interface ArticleOwnershipToken extends Article {
-  ownerToken: string;
+interface ArticleOwnershipToken extends Omit<Article, 'slug'> {
+  slug: ArticleSlug;       
+  ownerToken: AuthToken;
 }
 
 interface ForeignUser {
-  token: string;
+  token: AuthToken;
   username: string;
 }
 
@@ -25,6 +27,7 @@ export const test = base.extend<ArticleOwnershipFixtures>({
 
     const mutableArticle: ArticleOwnershipToken = {
       ...article,
+      slug: article.slug as ArticleSlug,
       ownerToken,
     };
 
