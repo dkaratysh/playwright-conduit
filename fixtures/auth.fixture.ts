@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import type { AuthToken } from '../types/auth';
 import { loginViaApi } from '../helpers/api/auth';
-import { user as testUser } from '../test-data/auth/user.data';
+import { user as testUser, userB } from '../test-data/auth/user.data';
 
 export const test = base.extend<{
   authToken: AuthToken;
@@ -20,11 +20,11 @@ export const test = base.extend<{
   },
 
   authUserB: async({}, use ) => {
-    await use(testUser)
+    await use(userB)
   },
 
   authTokenB: async ({ request }, use) => {
-    const token = await loginViaApi(request, testUser);
+    const token = await loginViaApi(request, userB);
     await use(token);
   },
 });
