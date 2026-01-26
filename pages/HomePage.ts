@@ -16,7 +16,7 @@ export class HomePage extends BasePage {
 
     this.banner = this.page.locator('.banner');
     this.globalFeedTab = this.page.getByRole('button', { name: 'Global Feed' });
-    this.yourFeedTab = this.page.getByRole('link', { name: 'Your Feed' });
+    this.yourFeedTab = this.page.getByRole('button', { name: 'Your Feed' });
   }
 
   async goToEditor() {

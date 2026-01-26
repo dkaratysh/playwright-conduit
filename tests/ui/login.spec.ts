@@ -1,21 +1,23 @@
 import { test, expect } from '@playwright/test';
 import { user } from '../../test-data/auth/user.data';
-import { LoginPage } from '../../pages/LoginPage.js';
+import { Pages } from '../../pages/pages.factory';
 
 test.describe('Login tests', () => {
-  test('login and open home page', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+  let pages: Pages;
 
-    await loginPage.openLoginPage();
-    await loginPage.login(user.email, user.password);
-    await expect(page.getByRole('button', { name: 'Your Feed' })).toBeVisible();
+  test.beforeEach(async ({ page }) => {
+      pages = new Pages(page);
+    });
+
+  test('login and open home page', async () => {
+    await pages.login.openLoginPage();
+    await pages.login.login(user.email, user.password);
+    await expect(pages.home.yourFeedTab).toBeVisible();
   });
 
-  test('login with invalid credentials', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-
-    await loginPage.openLoginPage();
-    await loginPage.login(user.email, 'InvalidPassword123');
-    await expect(loginPage.errorMessage).toHaveText('Wrong email/password combination');
+  test('login with invalid credentials', async () => {
+    await pages.login.openLoginPage();
+    await pages.login.login(user.email, 'InvalidPassword123');
+    await expect(pages.login.errorMessage).toHaveText('Wrong email/password combination');
   });
 });
