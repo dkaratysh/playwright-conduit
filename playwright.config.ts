@@ -3,10 +3,13 @@ import 'dotenv/config';
 
 const baseURL = process.env.BASE_URL ?? 'https://conduit-realworld-example-app.fly.dev';
 export default defineConfig({
+  workers: process.env.CI ? 2 : undefined,
+  fullyParallel: true,
+  retries: process.env.CI ? 2 : 0,
+  
   use: {
     baseURL,
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
     trace: 'on-first-retry',
   },
   testDir: './tests',
@@ -26,6 +29,7 @@ export default defineConfig({
     {
       name: 'api',
       testDir: './tests/api',
+      retries: 0,
       use: {
         ...devices['Desktop Chrome'],
       },
@@ -37,6 +41,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: '.auth/user.json',
+        video: 'retain-on-failure',
       },
     },
     {
@@ -46,6 +51,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: '.auth/user.json',
+        video: 'retain-on-failure'
       },
     },
     {
@@ -53,6 +59,7 @@ export default defineConfig({
       testDir: './tests/mock',
       use: {
         ...devices['Desktop Chrome'],
+        video: 'retain-on-failure'
       },
     },
   ],
