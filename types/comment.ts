@@ -15,12 +15,12 @@ export interface Comment {
 export type CommentId = number & { readonly __brand: 'CommentId' };
 
 export function parseCommentFromApi(raw: any): Comment {
-    return {
-        ...raw,
-        id: raw.id as CommentId,
-    };
+  return {
+    ...raw,
+    id: raw.id as CommentId,
+  };
 }
 
 export function parseCommentsFromApi(raw: any[]): Comment[] {
-    return raw.map(parseCommentFromApi)
+  return raw.map(parseCommentFromApi);
 }

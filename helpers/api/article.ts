@@ -1,9 +1,6 @@
 import type { APIRequestContext } from '@playwright/test';
 import type { Article, ArticleSlug } from '../../types/article';
-import {
-  buildArticleData,
-  type ArticleInput,
-} from '../../test-data/factories/article.factory';
+import { buildArticleData, type ArticleInput } from '../../test-data/factories/article.factory';
 import type { AuthToken } from '../../types/auth';
 
 type CreateArticleOptions = {
@@ -12,8 +9,8 @@ type CreateArticleOptions = {
 };
 
 type CreateArticleResponse = {
-  article: Article
-}
+  article: Article;
+};
 
 export async function createArticle(
   request: APIRequestContext,
@@ -40,7 +37,7 @@ export async function createArticle(
   return {
     ...data.article,
     slug: data.article.slug as ArticleSlug,
-};
+  };
 }
 
 export async function deleteArticle(

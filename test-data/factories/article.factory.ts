@@ -1,9 +1,6 @@
 import type { Article } from '../../types/article';
 
-export type ArticleInput = Pick<
-  Article,
-  'title'| 'description' | 'body' | 'tagList'
->;
+export type ArticleInput = Pick<Article, 'title' | 'description' | 'body' | 'tagList'>;
 
 export function buildArticleData(overrides: Partial<ArticleInput> = {}): ArticleInput {
   return {

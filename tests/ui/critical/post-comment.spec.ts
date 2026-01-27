@@ -1,5 +1,5 @@
-import { test } from '../../fixtures/article.fixture';
-import { Pages } from '../../pages/pages.factory';
+import { test } from '../../../fixtures/article.fixture';
+import { Pages } from '../../../pages/pages.factory';
 
 test('Post comment UI tests', async ({ article, page }) => {
   let pages: Pages;

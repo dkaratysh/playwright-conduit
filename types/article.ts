@@ -17,7 +17,7 @@ export interface Article {
   };
 }
 
-export type ArticleSlug = string & {readonly __brand : ArticleSlug };
+export type ArticleSlug = string & { readonly __brand: ArticleSlug };
 
 export function toArticleSlug(slug: string | undefined): ArticleSlug {
   if (!slug) throw new Error('Cannot parse ArticleSlug from string');
@@ -27,7 +27,7 @@ export function toArticleSlug(slug: string | undefined): ArticleSlug {
 export function parseArticleFromApi(article: any): Article {
   return {
     ...article,
-    slug: article.slug as ArticleSlug, 
+    slug: article.slug as ArticleSlug,
   };
 }
 

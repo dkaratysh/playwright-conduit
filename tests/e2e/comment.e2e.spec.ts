@@ -1,10 +1,5 @@
 import { test, expect } from '../../fixtures/article.fixture';
-import {
-  parseCommentFromApi,
-  parseCommentsFromApi,
-  type CommentId,
-} from '../../types/comment';
-
+import { parseCommentFromApi, parseCommentsFromApi, type CommentId } from '../../types/comment';
 
 test('API e2e - Post comment and get list of commnets', async ({
   request,
@@ -30,7 +25,7 @@ test('API e2e - Post comment and get list of commnets', async ({
     expect(response.status()).toBe(201);
 
     const { comment } = await response.json();
-    const typedComment = parseCommentFromApi(comment)
+    const typedComment = parseCommentFromApi(comment);
     expect(typedComment.body).toBe(commentBody);
     expect(typedComment.author.username).not.toBe(authorUserName);
 

@@ -6,7 +6,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
-  
+
   use: {
     baseURL,
     screenshot: 'only-on-failure',
@@ -37,11 +37,20 @@ export default defineConfig({
     {
       name: 'chromium',
       testDir: './tests/ui',
+      testMatch: ['critical/*.spec.ts', 'smoke/authenticated/*.spec.ts'],
       dependencies: ['setup'],
       use: {
         ...devices['Desktop Chrome'],
         storageState: '.auth/user.json',
         video: 'retain-on-failure',
+      },
+    },
+    {
+      name: 'guest',
+      testDir: './tests/ui/smoke/guest',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: undefined,
       },
     },
     {
@@ -51,7 +60,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: '.auth/user.json',
-        video: 'retain-on-failure'
+        video: 'retain-on-failure',
       },
     },
     {
@@ -59,7 +68,7 @@ export default defineConfig({
       testDir: './tests/mock',
       use: {
         ...devices['Desktop Chrome'],
-        video: 'retain-on-failure'
+        video: 'retain-on-failure',
       },
     },
   ],

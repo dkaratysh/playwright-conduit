@@ -1,7 +1,6 @@
 import { test, expect } from '../../fixtures/article.fixture';
 import { parseArticleFromApi, parseArticlesFromApi } from '../../types/article';
 
-
 test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
   test('Mark article as favorite and check them in Favorited articles', async ({
     request,
@@ -19,7 +18,7 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
 
       expect(response.status()).toBe(200);
 
-      const { article: rawArticle } = await response.json() as { article: any };
+      const { article: rawArticle } = (await response.json()) as { article: any };
       const articleFromApi = parseArticleFromApi(rawArticle);
       expect(articleFromApi.slug).toBe(slug);
       expect(articleFromApi.author.username).toBe(authorUsername);
@@ -33,7 +32,7 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const { articles: rawArticles } = (await response.json()) as { articles: any[] };
       const typedArticles = parseArticlesFromApi(rawArticles);
       const articlesFromFavorite = typedArticles.find(article => article.slug === slug);
 
@@ -69,7 +68,7 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
 
       expect(response.status()).toBe(200);
 
-      const { article: rawArticle } = await response.json() as { article: any };
+      const { article: rawArticle } = (await response.json()) as { article: any };
       const articleFromApi = parseArticleFromApi(rawArticle);
 
       expect(articleFromApi.slug).toBe(slug);
@@ -83,10 +82,10 @@ test.describe('API e2e - Favorite/Unfavorite scenarios', () => {
       });
       expect(response.status()).toBe(200);
 
-      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const { articles: rawArticles } = (await response.json()) as { articles: any[] };
       const typedArticles = parseArticlesFromApi(rawArticles);
       const articleFromFeed = typedArticles.find(article => article.slug === slug);
-      
+
       expect(articleFromFeed).toBeUndefined();
     });
   });

@@ -6,7 +6,7 @@ import type { Article, ArticleSlug } from '../types/article';
 import type { AuthToken } from '../types/auth';
 
 interface ArticleOwnershipToken extends Omit<Article, 'slug'> {
-  slug: ArticleSlug;       
+  slug: ArticleSlug;
   ownerToken: AuthToken;
 }
 

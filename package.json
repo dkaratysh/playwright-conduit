@@ -6,7 +6,12 @@
   "scripts": {
     "test": "playwright test",
     "e2e": "npx playwright test --ui",
-    "test:api": "playwright test tests/api",
+    "test:api": "playwright test --project=api",
+    "test:guest": "playwright test --project=guest",
+    "test:ui": "playwright test --project=chromium",
+    "test:e2e": "playwright test --project=e2e",
+    "test:ui:debug": "playwright test --project=chromium --ui",
+    "test:guest:debug": "playwright test --project=guest --ui",
     "report": "playwright show-report",
     "debug": "PWDEBUG=1 npx playwright test",
     "format": "prettier --write .",

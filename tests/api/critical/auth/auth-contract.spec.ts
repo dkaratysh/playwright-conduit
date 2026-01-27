@@ -1,6 +1,5 @@
 import { test, expect } from '../../../../fixtures/auth.fixture';
 
-
 test('login token works on protected endpoint', async ({ request, authToken, authUser }) => {
   expect(authToken).toBeTruthy();
 

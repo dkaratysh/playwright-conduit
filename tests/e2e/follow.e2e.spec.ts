@@ -17,7 +17,7 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const{ profile } = await response.json();
+      const { profile } = await response.json();
       expect(profile.username).toBe(authorUsername);
       expect(profile.following).toBeTruthy();
     });
@@ -29,7 +29,7 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles } = await response.json() as { articles: any[] };
+      const { articles } = (await response.json()) as { articles: any[] };
       const typedArticles = articles.map(parseArticleFromApi);
 
       const articleFromFeed = typedArticles.find(article => article.slug === slug);
@@ -78,7 +78,7 @@ test.describe('API e2e - Follow/Unfollow scenario', () => {
 
       expect(response.status()).toBe(200);
 
-      const { articles: rawArticles } = await response.json() as { articles: any[] };
+      const { articles: rawArticles } = (await response.json()) as { articles: any[] };
       const typedArticles = parseArticlesFromApi(rawArticles);
 
       const articleFromAuthor = typedArticles.find(a => a.author.username === authorUsername);
