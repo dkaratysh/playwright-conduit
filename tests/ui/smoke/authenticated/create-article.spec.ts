@@ -1,6 +1,6 @@
-import { test } from '../../../fixtures/auth.fixture';
-import { buildArticleData } from '../../../test-data/factories/article.factory';
-import { Pages } from '../../../pages/pages.factory';
+import { test } from '../../../../fixtures/auth.fixture';
+import { buildArticleData } from '../../../../test-data/factories/article.factory';
+import { Pages } from '../../../../pages/pages.factory';
 
   test('Create new article', async ({ page, request, authToken }) => {
     const articleData = buildArticleData();

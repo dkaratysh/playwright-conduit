@@ -55,17 +55,6 @@ export class ArticlePage extends BasePage {
     await expect(this.articleBody).toContainText(text);
   }
 
-  async getCurrentSlug(): Promise<string> {
-    const url = this.page.url();
-
-    const match = url.match(/#\/(article|editor)\/(.+)$/);
-    if (!match) {
-      throw new Error(`Cannot extract article slug from URL: ${url}`);
-    }
-
-    return match[2];
-  }
-
   async deleteArticle() {
     this.page.once('dialog', async dialog => {
       await dialog.accept();

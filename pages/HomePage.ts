@@ -43,4 +43,8 @@ export class HomePage extends BasePage {
   async expectMockedArticle(title: string) {
     await expect(this.page.getByText(title)).toBeVisible();
   }
+
+  async openfirstArticle() {
+    await this.page.locator('a.preview-link').nth(0).click();
+  }
 }

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { user } from '../../../test-data/auth/user.data';
-import { Pages } from '../../../pages/pages.factory';
+import { user } from '../../../../test-data/auth/user.data';
+import { Pages } from '../../../../pages/pages.factory';
 
   test('login and open home page', async ({ page }) => {
     let pages: Pages;
