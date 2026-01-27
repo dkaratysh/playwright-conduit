@@ -1,12 +1,10 @@
 import { test } from '@playwright/test';
 import { Pages } from '../../../../pages/pages.factory';
 
-test.use({ storageState: undefined });
-test('Guest can navigate to an article from home page', async({ page }) => {
+test('Guest can navigate to an article from home page', async ({ page }) => {
   const pages = new Pages(page);
 
   await page.goto('/');
   await pages.home.openfirstArticle();
   await pages.article.assertOpened();
-
 });

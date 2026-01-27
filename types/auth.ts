@@ -1,1 +1,1 @@
-export type AuthToken = string & {readonly __brand : AuthToken };
+export type AuthToken = string & { readonly __brand: AuthToken };
