@@ -1,8 +1,8 @@
-import { test, expect } from '../../fixtures/article.fixture';
-import { buildArticleData } from '../../test-data/factories/article.factory';
-import { makeUpdatedArticle } from '../../helpers/ui/article.helpers';
-import { Pages } from '../../pages/pages.factory';
-import { toArticleSlug } from '../../types/article';
+import { test, expect } from '../../../fixtures/article.fixture';
+import { buildArticleData } from '../../../test-data/factories/article.factory';
+import { makeUpdatedArticle } from '../../../helpers/ui/article.helpers';
+import { Pages } from '../../../pages/pages.factory';
+import { toArticleSlug } from '../../../types/article';
 
 test.describe('Article CRUD UI tests', () => {
   let pages: Pages;

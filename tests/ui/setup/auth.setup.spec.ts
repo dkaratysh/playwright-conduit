@@ -1,5 +1,5 @@
 import { test as setup, expect } from '@playwright/test';
-import { Pages } from '../../pages/pages.factory';
+import { Pages } from '../../../pages/pages.factory';
 
 setup('authenticate user and save storage state', async ({ page }) => {
   let pages: Pages;
