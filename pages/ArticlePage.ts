@@ -92,4 +92,12 @@ export class ArticlePage extends BasePage {
   async expectNoComments(comment: string) {
     await expect(this.commentLocator.filter({ hasText: comment }).first()).toHaveCount(0);
   }
+
+  async expectEditButtonHidden() {
+    await expect(this.edit).toBeHidden();
+  }
+
+  async expectDeleteButtonHidden() {
+    await expect(this.delete).toBeHidden();
+  }
 }

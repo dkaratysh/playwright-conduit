@@ -1,7 +1,7 @@
 import { test } from '../../../fixtures/article.fixture';
 import { Pages } from '../../../pages/pages.factory';
 
-test('Post comment UI tests', async ({ article, page }) => {
+test('Owner can add and delete comment', async ({ article, page }) => {
   let pages: Pages;
   pages = new Pages(page);
 
