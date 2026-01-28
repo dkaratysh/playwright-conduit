@@ -1,7 +1,7 @@
 import { test } from '../../../../fixtures/article.fixture';
 import { Pages } from '../../../../pages/pages.factory';
 
-test('Foreign user can not see edit/delete button', async ({ page, article }) => {
+test('Guest user can not see edit/delete buttons', async ({ page, article }) => {
     const pages = new Pages(page);
     
     await pages.article.openArticle(article.slug);
