@@ -2,7 +2,7 @@ import { test } from '../../../fixtures/article.fixture';
 import { makeUpdatedArticle } from '../../../helpers/ui/article.helpers';
 import { Pages } from '../../../pages/pages.factory';
 
-  test('Update the article', async ({ article, page }) => {
+  test('Owner can update the article', async ({ article, page }) => {
     const updatedArticle = makeUpdatedArticle(article);
     let pages: Pages;
     pages = new Pages(page);

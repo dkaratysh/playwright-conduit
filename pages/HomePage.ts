@@ -47,8 +47,9 @@ export class HomePage extends BasePage {
   async openfirstArticle() {
     await this.page.locator('a.preview-link').nth(0).click();
   }
-  
+
   async assertOpened() {
     await expect(this.globalFeedTab).toBeVisible();
   }
+  
 }
