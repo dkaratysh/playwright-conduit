@@ -25,6 +25,7 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 - Schema and API contract validation
 
 ### e2e
+
 - Article edit flow (API - UI - API)
 - Comment flow
 - Favorite/Unfavorite scenarios
@@ -79,6 +80,7 @@ npm install
 ```bash
 npx playwright install
 ```
+
 ### 3 Environment variables
 
 ```bash
@@ -124,19 +126,20 @@ npx playwright show-report
 ### Do not commit .env into the repository!
 
 ## CI/Github Actions
+
 Configured via GitHub Secrets:
 
- - USER_EMAIL
+- USER_EMAIL
 
- - USER_PASS
+- USER_PASS
 
- - USERNAME
+- USERNAME
 
- - USERNAME_B
+- USERNAME_B
 
- - USER_EMAIL_B
+- USER_EMAIL_B
 
- - USER_PASS_B
+- USER_PASS_B
 
 ### CI Features
 
@@ -145,7 +148,6 @@ Configured via GitHub Secrets:
 - Generates Allure report
 
 - Publishes Allure report to GitHub Pages
-
 
 ## Key Principles
 

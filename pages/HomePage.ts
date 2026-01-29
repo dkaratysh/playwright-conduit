@@ -51,5 +51,4 @@ export class HomePage extends BasePage {
   async assertOpened() {
     await expect(this.globalFeedTab).toBeVisible();
   }
-  
 }
