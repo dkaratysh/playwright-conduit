@@ -30,8 +30,8 @@ export class ArticlePage extends BasePage {
   }
 
   async openArticle(slug: string) {
-    const homeUrl = `${process.env.BASE_URL}/#/article/${slug}`;
-    await this.page.goto(homeUrl);
+    const articleUrl = `${process.env.BASE_URL}/#/article/${slug}`;
+    await this.page.goto(articleUrl);
   }
 
   async assertOpened(slug?: string) {

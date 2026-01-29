@@ -19,9 +19,4 @@ export class EditorPage extends BasePage {
   async publishNewArticle() {
     await this.publishArticleButton.click();
   }
-
-  async getSlug(): Promise<string> {
-    const url = this.page.url();
-    return url.split('/').pop()!;
-  }
 }
