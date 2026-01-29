@@ -12,15 +12,24 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 ### UI tests
 
 - User login
-- Create article
-- Update article
-- Delete article
-- Basic navigation and content assertions
+- Article CRUD
+- Comment posting
+- Authenticated and guest scenarios
 
 ### API tests
 
-- User authentication via API
+- User authentication and authorization
+- Signup
+- Profile, Tags endpoints
 - Article CRUD operations
+- Schema and API contract validation
+
+### e2e
+
+- Article edit flow (API - UI - API)
+- Comment flow
+- Favorite/Unfavorite scenarios
+- Follow/Unfollow scenarios
 
 ### API is also used for
 
@@ -31,9 +40,9 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 
 ## 🏗 Project Architecture
 
-- Clear separation between **UI and API**
-- Test data is generated via **factory**
-- Cleanup is done via **API**
+- Clear separation between UI and API
+- Test data is generated via factory
+- Cleanup is done via PI
 - Page Object Pattern
 - Minimal logic inside tests
 
@@ -47,11 +56,12 @@ playwright-conduit/
 ├─ tests/
 │  ├─ ui/                 # UI tests
 │  └─ api/                # API tests
+|  └─ e2e/                # e2e tests
 ├─ fixtures/              # API / infrastructure fixtures
-│  └─ types/              # API entity types
-├─ test-data/
-│  └─ article.factory.ts  # Test data factory
-├─ helpers/               # Helpers (data transformation, updates)
+|- types/                 # API entity types
+├─ test-data/             # Test data factory
+|- components             # UI componets
+├─ helpers/               # UI/API Helpers (auth, data transformation, updates)
 ├─ .auth/                 # storageState (generated)
 ├─ playwright.config.ts
 └─ global-setup.ts
@@ -65,28 +75,46 @@ playwright-conduit/
 npm install
 ```
 
-### Install Playwright browsers
+### 2 Install Playwright browsers
 
 ```bash
 npx playwright install
 ```
 
-### Run all tests
+### 3 Environment variables
 
 ```bash
-npx playwright test
+Create a .env file in the project root:
+```
+
+```env
+BASE_URL=https://conduit-realworld-example-app.fly.dev
+USER_EMAIL=your_email@example.com
+USER_PASS=your_password
+```
+
+### 4 Run all tests
+
+```bash
+npm run test
 ```
 
 ### Run UI tests only
 
 ```bash
-npx playwright test tests/ui
+npm run test:ui
 ```
 
 ### Run API tests only
 
 ```bash
-npx playwright test tests/api
+npm run test:api
+```
+
+### Debug guest test
+
+```bash
+npm run test:guest:debug
 ```
 
 ### Open test report
@@ -95,45 +123,41 @@ npx playwright test tests/api
 npx playwright show-report
 ```
 
-## Environment variables
+### Do not commit .env into the repository!
 
-```bash
-Create a .env file in the project root:
-```
+## CI/Github Actions
 
-```env
-BASE_URL=https://api.realworld.io
-USER_EMAIL=your_email@example.com
-USER_PASS=your_password
-```
+Configured via GitHub Secrets:
 
-## Do not commit .env into the repository!
+- USER_EMAIL
 
-## Data Flow Diagram
+- USER_PASS
 
-```text
-[Test]
-|
-v
-[Factory] → Test Data
-|
-v
-[API Fixtures] → Create / Delete via API
-|
-v
-[Page Objects] → UI Actions
-|
-v
-[Assertions]
-```
+- USERNAME
+
+- USERNAME_B
+
+- USER_EMAIL_B
+
+- USER_PASS_B
+
+### CI Features
+
+- Runs Playwright tests
+
+- Generates Allure report
+
+- Publishes Allure report to GitHub Pages
 
 ## Key Principles
 
 - Fixtures provide infrastructure, not test scenarios
-- Test data is generated via a factory
+- Test data is generated via factories / builders
 - Page Objects contain no business logic
 - Cleanup is handled via API
 - UI and API models are clearly separated
+- API tests use pure request context, without `test.extend`
+- UI tests have a separate UI setup
 
 ## 📌 Tech Stack
 
@@ -141,3 +165,21 @@ v
 - TypeScript
 - Page Object Pattern
 - Hybrid UI + API testing
+- Allure reports
+- GitHub Actions CI
+
+✅ Notes
+
+- Auth is handled once and reused where applicable
+
+- API helpers are reused for setup and teardown
+
+- UI and API layers are intentionally not mixed
+
+- The framework is designed to scale without rewriting tests
+
+📎 References
+
+https://playwright.dev
+
+https://github.com/gothinkster/realworld
