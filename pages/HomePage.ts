@@ -9,6 +9,8 @@ export class HomePage extends BasePage {
   readonly banner: Locator;
   readonly globalFeedTab: Locator;
   readonly yourFeedTab: Locator;
+  readonly activeTagTab: Locator;
+  readonly popularTagsSection: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -17,6 +19,8 @@ export class HomePage extends BasePage {
     this.banner = this.page.locator('.banner');
     this.globalFeedTab = this.page.getByRole('button', { name: 'Global Feed' });
     this.yourFeedTab = this.page.getByRole('button', { name: 'Your Feed' });
+    this.activeTagTab = this.page.locator('.nav.nav-pills.outline-active').getByRole('button');
+    this.popularTagsSection = this.page.locator('.sidebar .tag-list');
   }
 
   async goToEditor() {
@@ -50,5 +54,24 @@ export class HomePage extends BasePage {
 
   async assertOpened() {
     await expect(this.globalFeedTab).toBeVisible();
+  }
+
+  async expectPopularTagsToBeVisible() {
+    const count = await this.popularTagsSection.count();
+
+    expect(count).toBeGreaterThan(0);
+  }
+
+  async clickOnTag(tagName: string) {
+    const tagLink = this.popularTagsSection
+      .locator('.tag-pill.tag-default', { hasText: tagName })
+      .first();
+
+    await expect(tagLink).toBeVisible();
+    await tagLink.click();
+  }
+
+  async expectTagTabToBeActive(tagName: string) {
+    await expect(this.activeTagTab.filter({ hasText: tagName })).toBeVisible();
   }
 }
