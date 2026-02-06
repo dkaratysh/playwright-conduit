@@ -60,7 +60,6 @@ export class HomePage extends BasePage {
     const count = await this.popularTagsSection.count();
 
     expect(count).toBeGreaterThan(0);
-    expect(count).toBeGreaterThan(0);
   }
 
   async clickOnTag(tagName: string) {
