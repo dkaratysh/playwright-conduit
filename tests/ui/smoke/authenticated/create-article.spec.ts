@@ -4,8 +4,7 @@ import { Pages } from '../../../../pages/pages.factory';
 
 test('Create new article', async ({ page, request, authToken }) => {
   const articleData = buildArticleData();
-  let pages: Pages;
-  pages = new Pages(page);
+  const pages = new Pages(page);
 
   await page.goto('/');
   await pages.home.goToEditor();
