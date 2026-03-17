@@ -2,8 +2,7 @@ import { test } from '../../../fixtures/article.fixture';
 import { Pages } from '../../../pages/pages.factory';
 
 test('Owner can add and delete comment', async ({ article, page }) => {
-  let pages: Pages;
-  pages = new Pages(page);
+  const pages = new Pages(page);
 
   const commentText = 'This is a test comment.';
 

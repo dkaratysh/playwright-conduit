@@ -4,8 +4,7 @@ import { Pages } from '../../../pages/pages.factory';
 
 test('Owner can update the article', async ({ article, page }) => {
   const updatedArticle = makeUpdatedArticle(article);
-  let pages: Pages;
-  pages = new Pages(page);
+  const pages = new Pages(page);
 
   await pages.article.openArticle(article.slug);
   await pages.article.assertOpened(article.slug);
