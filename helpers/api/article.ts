@@ -3,12 +3,12 @@ import type { Article, ArticleSlug } from '../../types/article';
 import { buildArticleData, type ArticleInput } from '../../test-data/factories/article.factory';
 import type { AuthToken } from '../../types/auth';
 
-type CreateArticleOptions = {
+export type CreateArticleOptions = {
   token: AuthToken;
   overrides?: Partial<Omit<Article, 'slug'>>;
 };
 
-type CreateArticleResponse = {
+export type CreateArticleResponse = {
   article: Article;
 };
 
