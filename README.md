@@ -41,10 +41,11 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 ## 🏗 Project Architecture
 
 - Clear separation between UI and API
-- Test data is generated via factory
-- Cleanup is done via PI
-- Page Object Pattern
-- Minimal logic inside tests
+- pages — UI layer (POM)
+- components — reusable UI parts
+- api/helpers — API abstraction
+- fixtures — DI and test setup
+- test-data — factories
 
 ---
 
@@ -54,13 +55,14 @@ The project combines **UI and API testing** with a clean, scalable architecture.
 playwright-conduit/
 ├─ pages/                 # Page Objects (UI abstraction)
 ├─ tests/
-│  ├─ ui/                 # UI tests
-│  └─ api/                # API tests
-|  └─ e2e/                # e2e tests
+│  ├─ ui/
+│  ├─ api/
+│  ├─ e2e/
+│  └─ mock/                # e2e tests
 ├─ fixtures/              # API / infrastructure fixtures
-|- types/                 # API entity types
+├─ types/                 # API entity types
 ├─ test-data/             # Test data factory
-|- components             # UI componets
+├─ components             # UI componets
 ├─ helpers/               # UI/API Helpers (auth, data transformation, updates)
 ├─ .auth/                 # storageState (generated)
 ├─ playwright.config.ts
@@ -153,11 +155,18 @@ Configured via GitHub Secrets:
 
 - Fixtures provide infrastructure, not test scenarios
 - Test data is generated via factories / builders
-- Page Objects contain no business logic
+- Page Objects contain UI interactions only (no business logic)
+- Business logic is implemented in helpers/services layer
 - Cleanup is handled via API
 - UI and API models are clearly separated
-- API tests use pure request context, without `test.extend`
 - UI tests have a separate UI setup
+
+## Why this approach
+
+- Fixtures are used for dependency injection and test isolation
+- Factories allow flexible and scalable test data generation
+- API is used for setup/teardown to keep UI tests fast and stable
+- Schema validation protects against backend contract regressions
 
 ## 📌 Tech Stack
 
@@ -170,7 +179,7 @@ Configured via GitHub Secrets:
 
 ✅ Notes
 
-- Auth is handled once and reused where applicable
+- Authentication is performed once and reused via storageState
 
 - API helpers are reused for setup and teardown
 
