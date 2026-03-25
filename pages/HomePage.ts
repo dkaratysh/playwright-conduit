@@ -74,4 +74,13 @@ export class HomePage extends BasePage {
   async expectTagTabToBeActive(tagName: string) {
     await expect(this.activeTagTab.filter({ hasText: tagName })).toBeVisible();
   }
+
+  async getFirstTag() {
+    const firstTag = await this.popularTagsSection.locator('.tag-pill.tag-default').first();
+    return firstTag.innerText();
+  }
+
+  async getFirstArticleTitle() {
+    return this.page.locator('a.preview-link').first().locator('h1').innerText();
+  }
 }

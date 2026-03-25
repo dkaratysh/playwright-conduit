@@ -37,7 +37,7 @@ export default defineConfig({
     {
       name: 'chromium',
       testDir: './tests/ui',
-      testMatch: ['critical/*.spec.ts', 'smoke/authenticated/*.spec.ts'],
+      testMatch: ['critical/*.spec.ts', 'smoke/authenticated/*.spec.ts', 'extended/*.spec.ts'],
       dependencies: ['setup'],
       use: {
         ...devices['Desktop Chrome'],
